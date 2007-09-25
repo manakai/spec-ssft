@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft 22 September 2007</h2>
+<h2>Working Draft 25 September 2007</h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -101,6 +101,66 @@ document are to be interpreted as described in
 <p><a href="http://suika.fam.cx/gate/cvs/*checkout*/markup/html/whatpm/Whatpm/CSS/SelectorsSerializer.pm">See the reference implementation</a>
 for now.</p>
 </div>
+
+<p><dfn id=newline>Newline</dfn> is <code class=char>U+000A</code>
+<code class=charname>LINE FEED</code> <span class=ed>or
+U+000D U+000A or U+000A ??</span>.</p>
+
+<ol>
+<li>Let <var>result</var> an empty string.</li>
+<li>For each selector (<var>selector</var>) in the group of selectors:
+  <ol>
+  <li>If <var>selector</var> is <em>not</em> the first selector
+  in the group of selectors, then append a <code class=char>U+002C</code>
+  <code class=charname>COMMA</code> followed by a
+  <a href="#newline">newline</a> to <var>result</var>.</li>
+  <li>Append four <code class=char>U+0020</code>
+  <code class=charname>SPACE</code> characters to <var>result</var>.</li>
+  <li>Process each sequence of simple selectors or
+  combinator in <var>selector</var> by following algorithm:
+    <dl class=switch>
+    <dt>If it is a sequence of simle selector (<var>sss</var>)</dt>
+      <dd class=ed>@@</dd>
+    <dt>If it is a combinator (<var>c</var>)</dt>
+      <dd>
+        <ol>
+        <li>Append two <code class=char>U+0020</code>
+        <code class=charname>SPACE</code> characters to <var>result</var>.</li>
+        <li>
+          <dl class=switch>
+          <dt>If <var>c</var> is descendant combinator (white space)</dt>
+            <dd>Append a <code class=char>U+0020</code>
+            <code class=charname>SPACE</code> character to
+            <var>result</var>.</dd>
+          <dt>If <var>c</var> is child combinator
+          (<code class=char>></code>)</dt>
+            <dd>Append a <code class=char>U+003E</code>
+            <code class=charname>GREATER-THAN SIGN</code> character to
+            <var>result</var>.</dd>
+          <dt>If <var>c</var> is adjacent sibling combinator
+          (<code class=char>+</code>)</dt>
+            <dd>Append a <code class=char>U+0020</code>
+            <code class=charname>SPACE</code> character to
+            <var>result</var>.</dd>
+          <dt>If <var>c</var> is general sibling combinator
+          (<code class=char>~</code>)</dt>
+            <dd>Append a <code class=char>U+007E</code>
+            <code class=charname>TILDE</code> character to
+            <var>result</var>.</dd>
+          </dl>
+        </li>
+        <li>Append a <code class=char>U+0020</code>
+        <code class=charname>SPACE</code> character to
+        <var>result</var>.</li>
+        </ol>
+      </dd>
+    </dl>
+  </ol>
+</li>
+<li>Then, <var>result</var> is the 
+<abbr title="Selectors Serialization Format for Testing">SFFT</abbr>
+representation of the group of selectors.</li>
+</ol>
 
 </div>
 
