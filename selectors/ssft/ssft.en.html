@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft 25 September 2007</h2>
+<h2>Working Draft <time datetime=2007-10-01>1 October 2007</time></h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -23,6 +23,8 @@ Specification</h1>
 <dt>Latest Working Draft</dt>
 -->
 <!-- <dt>Previous Version</dt> -->
+<dt>Version History</dt>
+  <dd><code class=URI>&lt;<a href="http://suika.fam.cx/gate/cvs/markup/selectors/ssft/ssft.en.html">http://suika.fam.cx/gate/cvs/markup/selectors/ssft/ssft.en.html</a>&gt;</code></dd>
 </dl>
 <dl class="authors" id="author">
 <dt>Author</dt>
@@ -32,7 +34,7 @@ Specification</h1>
       >w@suika.fam.cx</a>&gt;</code></dd>
 </dl>
 
-<p class="copyright" lang="en">&#xA9; 2007 <a
+<p class="copyright" lang="en">&#xA9; <time>2007</time> <a
     href="http://suika.fam.cx/~wakaba/who?" rel="author">Wakaba</a>.
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the <a rel="license"
@@ -57,12 +59,13 @@ available at <code class="URI">&lt;<a
 <div id="status" class="section">
 <h2>Status of This Document</h2>
 
-<p><em>This section describes the status of this document
+<p class=section-info><em>This section describes the status of this document
 at the time of its publication.  Other documents
 might supersede this document.</em></p>
 
-<p>This document is a working draft.
-It might be updated, replaced, or obsoleted by
+<p>This document is a working draft, produced as part
+of the <a href="http://suika.fam.cx/www/manakai-core/doc/web/">manakai</a> 
+project.  It might be updated, replaced, or obsoleted by
 other documents at any time.  It is inappropriate to
 cite this document as other than <q>work in progress</q>.</p>
 
@@ -77,19 +80,34 @@ normative version.</p>
 <div id="introduction" class="section">
 <h2>Introduction</h2>
 
-<p>This section is <em>informative</em>.</p>
+<p class=section-info>This section is <em>non-normative</em>.</p>
+
+<p>Selectors 
+<cite class="bibref normative">[<a href="#ref-SELECTORS">SELECTORS</a>]</cite>
+are patterns that match against elements
+in a tree structure and are used in Web technologies, including 
+<a href="http://www.w3.org/TR/CSS21"><abbr title="Cascading Style Sheets">CSS</abbr></a>
+<cite class="bibref informative">[<a href="#ref-CSS">CSS</a>]</cite>,
+<a href="http://whatwg.org/html5"><abbr title="Hypertext Markup Language">HTML</abbr>5</a>
+<cite class="bibref informative">[<a href="#ref-HTML5">HTML5</a>]</cite>,
+<a href="http://www.mozilla.org/projects/xbl/xbl2.html"><abbr title="XML Binding Language">XBL</abbr>2</a>
+<cite class="bibref informative">[<a href="#ref-XBL2">XBL2</a>]</cite>, and 
+<a href="http://dev.w3.org/cvsweb/~checkout~/2006/webapi/selectors-api/Overview.html?rev=1.28&amp;content-type=text/html;%20charset=utf-8">Selectors
+<abbr>API</abbr></a>
+<cite class="bibref informative">[<a href="#ref-SAPI">SAPI</a>]</cite>.</p>
 
 <div class="issue ed">...</div>
 
 <p><a href="http://dev.w3.org/cvsweb/csswg/cssom/Overview.html">The 
 <abbr title="Cascading Style Sheets Object Model">CSSOM</abbr> 
 specification</a> 
-<cite class="bibref informative">[<a href="#bib-CSSOM">CSSOM</a>]</cite> 
+<cite class="bibref informative">[<a href="#ref-CSSOM">CSSOM</a>]</cite> 
 is trying to define an algorithm to
 <a href="http://dev.w3.org/cvsweb/~checkout~/csswg/cssom/Overview.html?rev=1.55&amp;content-type=text/html;%20charset=utf-8#serializing0">serialize
 a group of selectors</a> for the purpose of <code>selectorText</code>
 attribute.  However, the algorithm is incomplete
-at the time of the writing.  Note that current Web browser implementations
+<time datetime=2007-09-25>at the time of the writing</time>.  
+Note that current Web browser implementations
 of the <code>selectorText</code> attribute are consistently broken
 in not escaping unsafe identifiers.</p>
 
@@ -104,8 +122,14 @@ in not escaping unsafe identifiers.</p>
 <q><em class="rfc2119">SHOULD NOT</em></q>, and
 <q><em class=rfc2119>MAY</em></q> in this
 document are to be interpreted as described in 
-<abbr title="Request for Comments">RFC</abbr> 2119
+<a href="urn:ietf:rfc:2119"><abbr title="Request for Comments">RFC</abbr> 
+2119</a>
 <cite class="bibref normative">[<a href="#ref-KEYWORDS">KEYWORDS</a>]</cite>.</p>
+
+<!-- Strictly speaking the paragraph below is not part of terminology. -->
+<p>All examples and notes in this specification are non-normative,
+as are all sections explicitly marked non-normative.  Everything
+else in this specification is normative.</p>
 </div>
 
 <div class="section" id="serializing">
@@ -155,8 +179,8 @@ U+000D U+000A or U+000A ??</span>.</p>
             <var>result</var>.</dd>
           <dt>If <var>c</var> is adjacent sibling combinator
           (<code class=char>+</code>)</dt>
-            <dd>Append a <code class=char>U+0020</code>
-            <code class=charname>SPACE</code> character to
+            <dd>Append a <code class=char>U+002B</code>
+            <code class=charname>PLUS SIGN</code> character to
             <var>result</var>.</dd>
           <dt>If <var>c</var> is general sibling combinator
           (<code class=char>~</code>)</dt>
@@ -200,7 +224,7 @@ groups of selectors.</p>
 <div class="section" id="examples">
 <h2>Examples</h2>
 
-<p>This section is <em>informative</em>.</p>
+<p class=section-info>This section is <em>non-normative</em>.</p>
 
 <div class="ed issue">
 <p><a href="http://suika.fam.cx/gate/2007/css/parser-interface">Try demo</a>,
@@ -228,28 +252,57 @@ by choosing <q>Selectors</q> radio button.</a></p>
   <abbr>RFCs</abbr> to Indicate Requirement Levels</a></cite>,
   <abbr title="Internet Engineering Task Force">IETF</abbr> 
   <a href="urn:ietf:bcp:14"><abbr title="Best Current Practice">BCP</abbr> 
-  14</a>, <abbr title="Request for Comments">RFC</abbr> 2119, March 1997.
+  14</a>, <abbr title="Request for Comments">RFC</abbr> 2119, 
+  <time datetime=1997-03>March 1997</time>.
   This version of the specification is referenced</dd>
 <dt id=ref-SELECTORS>SELECTORS</dt>
   <dd><a href="http://www.w3.org/TR/2005/WD-css3-selectors-20051215"><cite>Selectors</cite></a>,
   <abbr title="World Wide Web Consortium">W3C</abbr> Working Draft,
-  15 December 2005.  Work in progress.  
+  <time datetime=2005-12-15>15 December 2005</time>.  Work in progress.  
   <a href="http://www.w3.org/TR/css3-selectors">The latest version</a>
   of the specification is referenced.</dd>
 </dl>
 </div>
 
 <div id="informative-references" class="section informative reference">
-<h3>Informative References</h3>
+<h3>Non-normative References</h3>
 
 <dl>
+<dt id=ref-CSS>CSS</dt>
+  <dd><cite><a href="http://www.w3.org/TR/2007/CR-CSS21-20070719">Cascading
+  Style Sheets Level 2 Revision 1 (<abbr>CSS</abbr> 2.1)
+  Specification</a></cite>, 
+  <abbr title="World Wide Web Consortium">W3C</abbr> Candidate
+  Recommendation, <time datetime=2007-07-19>19 July 2007</time>.
+  Work in progress.  The latest version of the specification is
+  available at 
+  <code class=URI>&lt;<a href="http://www.w3.org/TR/CSS21">http://www.w3.org/TR/CSS21</a>></code>.</dd>
 <dt id=ref-CSSOM>CSSOM</dt>
   <dd><cite><a href="http://dev.w3.org/cvsweb/~checkout~/csswg/cssom/Overview.html?rev=1.55&amp;content-type=text/html;%20charset=utf-8">Cascading
   Style Sheets Object Model (<abbr>CSSOM</abbr>)</a></cite>,
   <abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft,
-  18 June 2007.  Work in progress.  The latest Editor's Draft
-  of the specification is available at
-  <code class=uri>&lt;<a href="http://dev.w3.org/csswg/cssom/Overview.html">http://dev.w3.org/csswg/cssom/Overview.html</a>></code>.</dd>
+  <time datetime=2007-06-18>18 June 2007</time>.  Work in progress.
+  The latest Editor's Draft of the specification is available at
+  <code class=URI>&lt;<a href="http://dev.w3.org/csswg/cssom/Overview.html">http://dev.w3.org/csswg/cssom/Overview.html</a>></code>.</dd>
+<dt id=ref-HTML5>HTML5</dt>
+  <dd><cite><a href="http://whatwg.org/html5"><abbr>HTML</abbr> 5</a></cite>,
+  <abbr title="Web Hypertext Application Technology Working Group">WHATWG</abbr>
+  Working Draft.  Work in progress.</dd>
+<dt id=ref-SAPI>SAPI</dt>
+  <dd><cite><a href="http://dev.w3.org/cvsweb/~checkout~/2006/webapi/selectors-api/Overview.html?rev=1.28&amp;content-type=text/html;%20charset=utf-8">Selectors <abbr>API</abbr></a></cite>,
+  <abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft,
+  <time datetime=2007-08-29>29 August 2007</time>.  Work in progress.
+  The latest Editor's Draft of the specification is available at
+  <code class=URI>&lt;<a href="http://dev.w3.org/2006/webapi/selectors-api/Overview.html">http://dev.w3.org/2006/webapi/selectors-api/Overview.html</a>></code>.
+  The latest published version of the specification is available at
+  <code class=URI>&lt;<a href="http://www.w3.org/TR/selectors-api/">http://www.w3.org/TR/selectors-api/</a>></code>.</dd>
+<dt id=XBL2>XBL2</dt>
+  <dd><cite><a href="http://www.mozilla.org/projects/xbl/xbl2.html"><abbr>XBL</abbr>
+  2.0</a></cite>, Mozilla.org, <time datetime=2007-03-15>15 Mar 2007</time>.
+  Work in progress.  The latest
+  <abbr title="World Wide Web Consortium">W3C</abbr>‐published
+  version of the specification is available at
+  <code class=URI>&lt;<a href="http://www.w3.org/TR/xbl/">http://www.w3.org/TR/xbl/</a>></code>.</dd>
 </dl>
 </div>
 
