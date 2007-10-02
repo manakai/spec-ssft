@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft <time datetime=2007-10-01>1 October 2007</time></h2>
+<h2>Working Draft <time datetime=2007-10-02>2 October 2007</time></h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -146,9 +146,12 @@ U+000D U+000A or U+000A ??</span>.</p>
 
 <!-- TODO: link terms to Selectors -->
 
+<p>To <dfn id=algorithm-serialize-a-group-of-selectors>serialize a group of 
+selectors</dfn> (<dfn id=var-gs><var>gs</var></dfn>):</p>
 <ol>
-<li>Let <var>result</var> an empty string.</li>
-<li>For each selector (<var>selector</var>) in the group of selectors:
+<li>Let <dfn id=var-result><var>result</var></dfn> an empty string.</li>
+<li>For each selector (<dfn id=var-selector><var>selector</var></dfn>) in 
+<var>gs</var>:
   <ol>
   <li>If <var>selector</var> is <em>not</em> the first selector
   in the group of selectors, then append a <code class=char>U+002C</code>
@@ -159,9 +162,10 @@ U+000D U+000A or U+000A ??</span>.</p>
   <li>Process each sequence of simple selectors or
   combinator in <var>selector</var> by following algorithm:
     <dl class=switch>
-    <dt>If it is a sequence of simle selector (<var>sss</var>)</dt>
+    <dt>If it is a sequence of simle selector 
+    (<dfn id=var-sss><var>sss</var></dfn>)</dt>
       <dd class=ed>@@</dd>
-    <dt>If it is a combinator (<var>c</var>)</dt>
+    <dt>If it is a combinator (<dfn id=var-c><var>c</var></dfn>)</dt>
       <dd>
         <ol>
         <li>Append two <code class=char>U+0020</code>
@@ -201,6 +205,34 @@ U+000D U+000A or U+000A ??</span>.</p>
 <abbr title="Selectors Serialization Format for Testing">SFFT</abbr>
 representation of the group of selectors.</li>
 </ol>
+
+<p>To <dfn id=algorithm-serialize-a-simple-selector>serialize a simple 
+selector</dfn> (<dfn><var id=var-ss>ss</var></dfn>):</p>
+<dl class=switch>
+<dt>If <var>ss</var> is a type or universal selector</dt>
+  <dd><dl class=switch>
+  <dt>If a namespace URI is specified (via namespace prefix, or
+  by omitting namespace prefix where a default namespace is specified)</dt>
+    <dd class="ed">@@</dd>
+  <dt>If the null namespace is specified (by zero‐length namespace
+  prefix)</dt>
+    <dd>Return a <code class=char>U+007C</code> <code class=charname>VERTICAL
+    BAR</code> character, followed by either local name (if <var>ss</var>
+    is a type selector) or a <code class=char>U+002A</code>
+    <code class=charname>ASTERISK</code> character (if <var>ss</var>
+    is a universal selector).</dd>
+  <dt>If no namespace is specified (by namespace prefix <code>*</code>,
+  or by omitting namespace prefix where no default namespace is specified)</dt>
+    <dd>Return a <code class=char>U+002A</code> 
+    <code class=charname>ASTERISK</code> character, followed by a
+    <code class=char>U+007C</code> <code class=charname>VERTICAL BAR</code>
+    character, followed by either local name (if <var>ss</var>
+    is a type selector) or a <code class=char>U+002A</code>
+    <code class=charname>ASTERISK</code> character (if <var>ss</var>
+    is a universal selector).</dd>
+  </dl></dd>
+<dt class=ed>@@</dt>
+</dl>
 
 </div>
 
