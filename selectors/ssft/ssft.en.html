@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft <time datetime=2007-10-02>2 October 2007</time></h2>
+<h2>Working Draft <time datetime=2007-10-07>7 October 2007</time></h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -80,7 +80,7 @@ normative version.</p>
 <div id="introduction" class="section">
 <h2>Introduction</h2>
 
-<p class=section-info>This section is <em>non-normative</em>.</p>
+<p class=section-info>This section is <em>non‐normative</em>.</p>
 
 <p>Selectors 
 <cite class="bibref normative">[<a href="#ref-SELECTORS">SELECTORS</a>]</cite>
@@ -127,9 +127,14 @@ document are to be interpreted as described in
 <cite class="bibref normative">[<a href="#ref-KEYWORDS">KEYWORDS</a>]</cite>.</p>
 
 <!-- Strictly speaking the paragraph below is not part of terminology. -->
-<p>All examples and notes in this specification are non-normative,
-as are all sections explicitly marked non-normative.  Everything
+<p>All examples and notes in this specification are non‐normative,
+as are all sections explicitly marked non‐normative.  Everything
 else in this specification is normative.</p>
+
+<p>For the purpose of this specification, pseudo‐elements are also
+referred to as <dfn title="simple selector" id=simple-selector>simple
+selectors</dfn> and are considered as part of the last sequence of 
+simple selector in a selector.</p>
 </div>
 
 <div class="section" id="serializing">
@@ -140,14 +145,15 @@ else in this specification is normative.</p>
 for now.</p>
 </div>
 
-<p><dfn id=newline>Newline</dfn> is <code class=char>U+000A</code>
-<code class=charname>LINE FEED</code> <span class=ed>or
-U+000D U+000A or U+000A ??</span>.</p>
+<p><dfn id=newline title=newline>Newline</dfn> is 
+<code class=char>U+000A</code> <code class=charname>LINE FEED</code> 
+<span class=ed>or U+000D U+000A or U+000A ??</span>.</p>
 
 <!-- TODO: link terms to Selectors -->
 
-<p>To <dfn id=algorithm-serialize-a-group-of-selectors>serialize a group of 
-selectors</dfn> (<dfn id=var-gs><var>gs</var></dfn>):</p>
+<p>To 
+<dfn id=algorithm-serialize-a-group-of-selectors title="serialize a group of selectors">serialize
+a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>:</p>
 <ol>
 <li>Let <dfn id=var-result><var>result</var></dfn> an empty string.</li>
 <li>For each selector (<dfn id=var-selector><var>selector</var></dfn>) in 
@@ -155,7 +161,7 @@ selectors</dfn> (<dfn id=var-gs><var>gs</var></dfn>):</p>
   <ol>
   <li>If <var>selector</var> is <em>not</em> the first selector
   in the group of selectors, then append a <code class=char>U+002C</code>
-  <code class=charname>COMMA</code> followed by a
+  <code class=charname>COMMA</code> (<code class=char>,</code>) followed by a
   <a href="#newline">newline</a> to <var>result</var>.</li>
   <li>Append four <code class=char>U+0020</code>
   <code class=charname>SPACE</code> characters to <var>result</var>.</li>
@@ -179,18 +185,18 @@ selectors</dfn> (<dfn id=var-gs><var>gs</var></dfn>):</p>
           <dt>If <var>c</var> is child combinator
           (<code class=char>></code>)</dt>
             <dd>Append a <code class=char>U+003E</code>
-            <code class=charname>GREATER-THAN SIGN</code> character to
-            <var>result</var>.</dd>
+            <code class=charname>GREATER-THAN SIGN</code>
+            (<code class=char>></code>) character to <var>result</var>.</dd>
           <dt>If <var>c</var> is adjacent sibling combinator
           (<code class=char>+</code>)</dt>
             <dd>Append a <code class=char>U+002B</code>
-            <code class=charname>PLUS SIGN</code> character to
-            <var>result</var>.</dd>
+            <code class=charname>PLUS SIGN</code> (<code class=char>+</code>)
+            character to <var>result</var>.</dd>
           <dt>If <var>c</var> is general sibling combinator
           (<code class=char>~</code>)</dt>
             <dd>Append a <code class=char>U+007E</code>
-            <code class=charname>TILDE</code> character to
-            <var>result</var>.</dd>
+            <code class=charname>TILDE</code> (<code class=char>~</code>)
+            character to <var>result</var>.</dd>
           </dl>
         </li>
         <li>Append a <code class=char>U+0020</code>
@@ -206,32 +212,149 @@ selectors</dfn> (<dfn id=var-gs><var>gs</var></dfn>):</p>
 representation of the group of selectors.</li>
 </ol>
 
-<p>To <dfn id=algorithm-serialize-a-simple-selector>serialize a simple 
-selector</dfn> (<dfn><var id=var-ss>ss</var></dfn>):</p>
+<p>To 
+<dfn id=algorithm-serialize-a-simple-selector title="serialize a simple selector">serialize
+a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
 <dl class=switch>
 <dt>If <var>ss</var> is a type or universal selector</dt>
-  <dd><dl class=switch>
-  <dt>If a namespace URI is specified (via namespace prefix, or
-  by omitting namespace prefix where a default namespace is specified)</dt>
-    <dd class="ed">@@</dd>
-  <dt>If the null namespace is specified (by zero‐length namespace
-  prefix)</dt>
-    <dd>Return a <code class=char>U+007C</code> <code class=charname>VERTICAL
-    BAR</code> character, followed by either local name (if <var>ss</var>
-    is a type selector) or a <code class=char>U+002A</code>
-    <code class=charname>ASTERISK</code> character (if <var>ss</var>
-    is a universal selector).</dd>
-  <dt>If no namespace is specified (by namespace prefix <code>*</code>,
-  or by omitting namespace prefix where no default namespace is specified)</dt>
-    <dd>Return a <code class=char>U+002A</code> 
-    <code class=charname>ASTERISK</code> character, followed by a
-    <code class=char>U+007C</code> <code class=charname>VERTICAL BAR</code>
-    character, followed by either local name (if <var>ss</var>
-    is a type selector) or a <code class=char>U+002A</code>
-    <code class=charname>ASTERISK</code> character (if <var>ss</var>
-    is a universal selector).</dd>
-  </dl></dd>
-<dt class=ed>@@</dt>
+  <dd>
+    <ol>
+    <li>
+      <dl class=switch>
+      <dt>If a namespace URI is specified (via namespace prefix, or
+      by omitting namespace prefix where a default namespace is specified)</dt>
+        <dd class="ed">@@</dd>
+      <dt>If the null namespace is specified (by zero‐length namespace
+      prefix)</dt>
+        <dd>Append a <code class=char>U+007C</code>
+        <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
+        character to <var>result</var>.</dd>
+      <dt>If no namespace is specified (by namespace prefix <code>*</code>,
+      or by omitting namespace prefix where no default namespace is
+      specified)</dt>
+        <dd>Append a <code class=char>U+002A</code> 
+        <code class=charname>ASTERISK</code> (<code class=char>*</code>)
+        character, followed by a <code class=char>U+007C</code>
+        <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
+        character, to <var>result</var>.</dd>
+      </dl>
+    </li>
+    <li>If <var>ss</var> is a type selector, append the
+    <span class=ed>@@ normalized</span> local name to <var>result</var>.</li>
+    <li>If <var>ss</var> is a universal selector, append 
+    a <code class=char>U+002A</code> <code class=charname>ASTERISK</code>
+    (<code class=char>*</code>) character to <var>result</var>.</li>
+    </ol>
+  </dd>
+<dt>If <var>ss</var> is an attribute selector</dt>
+  <dd class=ed>@@</dd>
+<dt>If <var>ss</var> is a class selector</dt>
+  <dd>Append a <code class=char>U+002E</code> <code class=charname>FULL
+  STOP</code> (<code class=char>.</code>) character, followed
+  by <span class=ed>@@ normalized</span> class name,
+  <var>result</var>.</dd>
+<dt>If <var>ss</var> is an <abbr>ID</abbr> selector</dt>
+  <dd>Append a <code class=char>U+0023</code> <code class=charname>NUMBER
+  SIGN</code> (<code class=char>#</code>) character, followed
+  by <span class=ed>@@ normalized</span> <abbr>ID</abbr>,
+  to <var>result</var>.</dd>
+<dt>If <var>ss</var> is a pseudo‐class selector</dt>
+  <dd>
+    <ol>
+    <li>Append a <code class=char>U+003A</code> 
+    <code class=charname>COLON</code> (<code class=char>:</code>) character
+    to <var>result</var>.</li>
+    <li>Append <span class=ed>@@ normalized</span> 
+    pseudo‐class name to <var>result</var>.</li>
+    <li>Append any arguments as following:
+      <dl class=switch>
+      <dt>If pseudo‐class name is <code>lang</code></dt>
+        <dd>
+          <ol>
+          <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
+          PARENTHESIS</code> (<code class=char>(</code>) character
+          to <var>result</var>.</li>
+          <li>Append <span class=ed>@@ normalized</span> 
+          language tag (the argument) to <var>result</var>.</li>
+          <li>Append a <code class=char>U+0029</code>
+          <code class=charname>RIGHT PARENTHESIS</code> 
+          (<code class=char>)</code>) character
+          to <var>result</var>.</li>
+          </ol>
+        </dd>
+      <dt>If pseudo‐class name is <code>-manakai-contains</code></dt>
+        <dd>
+          <ol>
+          <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
+          PARENTHESIS</code> (<code class=char>(</code>) character
+          to <var>result</var>.</li>
+          <li>Append <span class=ed>@@ normalized</span> 
+          string (the argument) to <var>result</var>.</li>
+          <li>Append a <code class=char>U+0029</code>
+          <code class=charname>RIGHT PARENTHESIS</code> 
+          (<code class=char>)</code>) character
+          to <var>result</var>.</li>
+          </ol>
+        </dd>
+      <dt>If pseudo‐class name is <code>nth-child</code>,
+      <code>nth-last-child</code>, <code>nth-of-type</code>, or
+      <code>nth-last-of-type</code></dt>
+        <dd>
+          <ol>
+          <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
+          PARENTHESIS</code> (<code class=char>(</code>) character
+          to <var>result</var>.</li>
+          <li>Append <span class=ed>@@ normalized</span>
+          integer <var>a</var> to <var>result</var>.
+          If the argument is a keyword <code>odd</code> or <code>even</code>,
+          <var>a</var> is <code>2</code>.  If <var>a</var> and
+          <code>n</code> is omitted, <var>a</var> is assumed as
+          <code>0</code>.  Otherwise, if <var>a</var> is omitted,
+          it is assumed as <code>1</code> (or <code>-1</code>,
+          if there is a <code class=char>U+002D</code>
+          <code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
+          character).</li>
+          <li>Append a <code class=char>U+006E</code> 
+          <code class=charname>LATIN SMALL LETTER N</code>
+          (<code class=char>n</code>) character to <var>result</var>.</li>
+          <li>Append <span class=ed>@@ normalized</span>
+          integer <var>b</var> to <var>result</var>.
+          It <em class=rfc2119>MUST</em> be preceded by a sign,
+          either <code class=char>U+002B</code> <code class=charname>PLUS
+          SIGN</code> (<code class=char>+</code>) or
+          <code class=char>U+002D</code> 
+          <code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
+          character.  If the argument is a keyword <code>odd</code>,
+          <var>b</var> is <code>1</code>.  If the argument
+          is a keyword <code>even</code>, <var>b</var> is
+          <code>0</code>.  If <var>b</var> is omitted, it is assumed as
+          <code>0</code>.  The sign of <code>0</code>
+          <em class=rfc2119>MUST</em> be <code class=char>U+002B</code>
+          <code class=charname>PLUS SIGN</code> 
+          (<code class=char>+</code>).</li>
+          <li>Append a <code class=char>U+0029</code>
+          <code class=charname>RIGHT PARENTHESIS</code>
+          (<code class=char>)</code>) character
+          to <var>result</var>.</li>
+          </ol>
+        </dd>
+      <dt>If pseudo‐class name is <code>not</code></dt>
+        <dd class=ed>@@</dd>
+      </dl>
+    </li>
+    </ol>
+  </dd>
+<dt>If <var>ss</var> is a pseudo‐element</dt>
+  <dd>
+    <ol>
+    <li>Append two <code class=char>U+003A</code>
+    <code class=charname>COLON</code> characters (<code>::</code>)
+    to <var>result</var>.</li>
+    <li>Append <span class=ed>@@ normalized</span>
+    pseudo‐element name to <var>result</var>.</li>
+    <!-- For future version: append "(", arguments, ")", if any. -->
+    </ol>
+  </dd>
 </dl>
 
 </div>
@@ -256,11 +379,11 @@ groups of selectors.</p>
 <div class="section" id="examples">
 <h2>Examples</h2>
 
-<p class=section-info>This section is <em>non-normative</em>.</p>
+<p class=section-info>This section is <em>non‐normative</em>.</p>
 
 <div class="ed issue">
 <p><a href="http://suika.fam.cx/gate/2007/css/parser-interface">Try demo</a>,
-by choosing <q>Selectors</q> radio button.</a></p>
+by choosing <q>Selectors</q> radio button.</p>
 
 <div class="example figure block">
 <div class="caption">...</div>
@@ -273,7 +396,7 @@ by choosing <q>Selectors</q> radio button.</a></p>
 </div>
 
 <div id="references" class="section reference">
-<h2>References</h1>
+<h2>References</h2>
 
 <div id="normative-references" class="section normative reference">
 <h3>Normative References</h3>
@@ -297,7 +420,7 @@ by choosing <q>Selectors</q> radio button.</a></p>
 </div>
 
 <div id="informative-references" class="section informative reference">
-<h3>Non-normative References</h3>
+<h3>Non‐normative References</h3>
 
 <dl>
 <dt id=ref-CSS>CSS</dt>
