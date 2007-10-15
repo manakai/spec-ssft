@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft <time datetime=2007-10-07>7 October 2007</time></h2>
+<h2>Working Draft <time datetime=2007-10-15>15 October 2007</time></h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -145,9 +145,12 @@ simple selector in a selector.</p>
 for now.</p>
 </div>
 
-<p><dfn id=newline title=newline>Newline</dfn> is 
-<code class=char>U+000A</code> <code class=charname>LINE FEED</code> 
-<span class=ed>or U+000D U+000A or U+000A ??</span>.</p>
+<p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation is defined for an invalid group of selectors.</p>
+
+<div class="note memo">
+<p>The serialized representation will not contain any comment.</p>
+</div>
 
 <!-- TODO: link terms to Selectors -->
 
@@ -208,8 +211,8 @@ a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>:</p>
   </ol>
 </li>
 <li>Then, <var>result</var> is the 
-<abbr title="Selectors Serialization Format for Testing">SFFT</abbr>
-representation of the group of selectors.</li>
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation of <var>gs</var>.</li>
 </ol>
 
 <p>To 
@@ -264,11 +267,11 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
     <li>Append a <code class=char>U+003A</code> 
     <code class=charname>COLON</code> (<code class=char>:</code>) character
     to <var>result</var>.</li>
-    <li>Append <span class=ed>@@ normalized</span> 
-    pseudo‐class name to <var>result</var>.</li>
+    <li>Append the <span class=ed>@@ normalized</span> name of the 
+    pseudo‐class to <var>result</var>.</li>
     <li>Append any arguments as following:
       <dl class=switch>
-      <dt>If pseudo‐class name is <code>lang</code></dt>
+      <dt>If the name of the pseudo‐class is <code>lang</code></dt>
         <dd>
           <ol>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
@@ -282,7 +285,8 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
           to <var>result</var>.</li>
           </ol>
         </dd>
-      <dt>If pseudo‐class name is <code>-manakai-contains</code></dt>
+      <dt>If the name of the pseudo‐class is
+      <code>-manakai-contains</code></dt>
         <dd>
           <ol>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
@@ -296,7 +300,7 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
           to <var>result</var>.</li>
           </ol>
         </dd>
-      <dt>If pseudo‐class name is <code>nth-child</code>,
+      <dt>If name of the pseudo‐class is either <code>nth-child</code>,
       <code>nth-last-child</code>, <code>nth-of-type</code>, or
       <code>nth-last-of-type</code></dt>
         <dd>
@@ -338,8 +342,38 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
           to <var>result</var>.</li>
           </ol>
         </dd>
-      <dt>If pseudo‐class name is <code>not</code></dt>
-        <dd class=ed>@@</dd>
+      <dt>If the name of the pseudo‐class is <code>not</code></dt>
+        <dd>
+          <ol>
+            <li>Append a string of <code class=char>U+003A</code>
+            <code class=charname>COLON</code>, <code class=char>U+006E</code>
+            <code class=charname>LATIN SMALL LETTER N</code>,
+            <code class=char>U+006F</code> <code class=charname>LATIN
+            SMALL LETTER O</code>, <code class=char>U+0074</code>
+            <code class=charname>LATIN SMALL LETTER T</code>, and
+            <code class=char>U+0028</code> <code class=charname>LEFT
+            PARENTHESIS</code> (<code>:not(</code>), followed by a
+            <a href="#newline">newline</a>, to <var>result</var>.</li>
+            <li>Append four <code class=char>U+0020</code>
+            <code class=charname>SPACE</code> characters to 
+            <var>result</var>.</li>
+            <li>Append four <code class=char>U+0020</code>
+            <code class=charname>SPACE</code> characters to 
+            <var>result</var> again.</li>
+            <li><a href="#algorithm-serialize-a-simple-selector">Serialize
+            the simple selector specified as the argument to the
+            <code>not</code> pseudo‐class</a>.</li>
+            <li>Append a <a href="#newline">newline</a> to
+            <var>result</var>.</li>
+            <li>Append four <code class=char>U+0020</code>
+            <code class=charname>SPACE</code> characters to
+            <var>result</var>.</li>
+            <li>Append a <code class=char>U+0029</code>
+            <code class=charname>RIGHT PARENTHESIS</code>
+            (<code class=char>)</code>) character
+            to <var>result</var>.</li>
+          </ol>
+        </dd>
       </dl>
     </li>
     </ol>
@@ -350,30 +384,49 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
     <li>Append two <code class=char>U+003A</code>
     <code class=charname>COLON</code> characters (<code>::</code>)
     to <var>result</var>.</li>
-    <li>Append <span class=ed>@@ normalized</span>
-    pseudo‐element name to <var>result</var>.</li>
+    <li>Append the <span class=ed>@@ normalized</span> name of the
+    pseudo‐element to <var>result</var>.</li>
     <!-- For future version: append "(", arguments, ")", if any. -->
     </ol>
   </dd>
 </dl>
 
+
+<p>A <dfn id=newline title=newline>newline</dfn> 
+<em class=rfc2119>SHOULD</em> be represented as a
+<code class=char>U+000A</code> <code class=charname>LINE FEED</code>
+character.  However, depending on the context where
+the <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation is in use, a sequence of 
+<code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
+followed by a <code class=char>U+000A</code> 
+<code class=charname>LINE FEED</code> or a character
+<code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
+<em class=rfc2119>MAY</em> be used as a newline instead.</p>
+
+<div class="note memo">
+<p>Therefore, when 
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representations are literally compared, newlines must be normalized.</p>
+</div>
+
 </div>
 
 <div class="section" id="parsing">
 <h2>Parsing 
-<abbr title="Selectors Serialization Format for Testing">SFFT</abbr>
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 Groups of Selectors</h2>
 
 <p>Since <a href="#serializing">the serializing algorithm</a> is 
 so designed that it always output a valid 
 <a href="http://www.w3.org/TR/css3-selectors/#grouping">group of
-selectors</a>, no special parser for
-<abbr title="Selectors Serialization Format for Testing">SFFT</abbr>
-is necessary.  Any conforming 
-<a href="http://www.w3.org/TR/css3-selectors/#grouping">group of
-selectors</a> parser <em class=rfc2119>MAY</em> be used
-to parse <abbr title="Selectors Serialization Format for Testing">SFFT</abbr> 
-groups of selectors.</p>
+selectors</a>, no special parser for the
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation is necessary.  Any conforming parser for
+<a href="http://www.w3.org/TR/css3-selectors/#grouping">groups of
+selectors</a> <em class=rfc2119>MAY</em> be used
+to parse <abbr title="Selectors Serialization Format for Testing">SSFT</abbr> 
+representations of groups of selectors.</p>
 </div>
 
 <div class="section" id="examples">
