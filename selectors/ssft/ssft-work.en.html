@@ -173,7 +173,14 @@ a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>:</p>
     <dl class=switch>
     <dt>If it is a sequence of simle selector 
     (<dfn id=var-sss><var>sss</var></dfn>)</dt>
-      <dd class=ed>@@</dd>
+      <dd>
+        <ol>
+        <li class=ed><a href="#algorithm-serialize-a-simple-selector">Serialize
+        each simple selector</a> in <var>sss</var>.</li>
+        <li class=ed>sort</li>
+        <li>Append a <a href="#newline">newline</a> to <var>result</var>.</li>
+        </ol>
+      </dd>
     <dt>If it is a combinator (<dfn id=var-c><var>c</var></dfn>)</dt>
       <dd>
         <ol>
@@ -250,7 +257,46 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
     </ol>
   </dd>
 <dt>If <var>ss</var> is an attribute selector</dt>
-  <dd class=ed>@@</dd>
+  <dd>
+    <ol>
+    <li>Append a <code class=char>U+005B</code> <code class=charname>LEFT
+    SQUARE BRACKET</code> (<code class=char>[</code>) to 
+    <var>result</var>.</li>
+    <li>
+      Append a namespace prefix as following:
+      <dl>
+      <dt>If a namespace URI is specified</dt>
+        <dd class=ed>@@</dd>
+        <dd class=ed>@@ Current reference implementation is wrong,
+        since its result of sorting depends on namespace prefix.</dd>
+      <dt>If the null namespace is specified</dt>
+        <dd>Append a <code class=char>U+007C</code>
+        <code class=charname>VERTICAL BAR</code> character to
+        <var>result</var>.</dd>
+      <dt>If no namespace is specified</dt>
+        <dd>Append a <code class=char>U+002A</code>
+        <code class=charname>ASTERISK</code> (<code class=char>*</code>)
+        character, followed by a <code class=char>U+007C</code>
+        <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
+        character, to <var>result</var>.</dd>
+      </dl>
+    </li>
+    <li>Append the <span class=ed>@@ normalized</span> local name to
+    <var>result</var>.</li>
+    <li>If a value is specified in <var>ss</var>:
+      <ol>
+      <li>Depending on the way to match, append <code>=</code>, 
+      <code>~=</code>, <code>|=</code>, <code>^=</code>,
+      <code>$=</code>, or <code>*=</code> to <var>result</var>.</li>
+      <li>Append the <span class=ed>@@ normalized</span> value to
+      <var>result</var>.</li>
+      </ol>
+    </li>
+    <li>Append a <code class=char>U+005D</code> <code class=charname>RIGHT
+    SQUARE BRACKET</code> (<code class=char>]</code>) to
+    <var>result</var>.</li>
+    </ol>
+  </dd>
 <dt>If <var>ss</var> is a class selector</dt>
   <dd>Append a <code class=char>U+002E</code> <code class=charname>FULL
   STOP</code> (<code class=char>.</code>) character, followed
@@ -400,14 +446,19 @@ the <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 representation is in use, a sequence of 
 <code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
 followed by a <code class=char>U+000A</code> 
-<code class=charname>LINE FEED</code> or a character
+<code class=charname>LINE FEED</code> (i.e. a
+<code>CRLF</code> sequence) or a character
 <code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
-<em class=rfc2119>MAY</em> be used as a newline instead.</p>
+<em class=rfc2119>MAY</em> be used as a <a href="#newline">newline</a> instead.
+<a href="#newline">Newline</a> representations 
+<em class=rfc2119>SHOULD</em> be consistent in an
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation.</p>
 
 <div class="note memo">
-<p>Therefore, when 
+<p>Therefore, newlines must be normalized before 
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representations are literally compared, newlines must be normalized.</p>
+representations are literally compared.</p>
 </div>
 
 </div>
