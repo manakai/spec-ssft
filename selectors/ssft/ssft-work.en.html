@@ -152,9 +152,14 @@ simple selector in a selector.</p>
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 Representation</h2>
 
+<p>Subsections of this section define algorithms
+to <a href="#algorithm-serialize-a-simple-selector">serialize a simple 
+selector</a> or <a href="#algorithm-serialize-a-group-of-selectors">serialize
+a group of selectors</a>.</p>
+
 <div class="issue ed">
-<p><a href="http://suika.fam.cx/gate/cvs/*checkout*/markup/html/whatpm/Whatpm/CSS/SelectorsSerializer.pm">See the reference implementation</a>
-for now.</p>
+<p><a href="http://suika.fam.cx/gate/cvs/*checkout*/markup/html/whatpm/Whatpm/CSS/SelectorsSerializer.pm">See
+also the reference implementation</a> for now.</p>
 </div>
 
 <div class="note memo">
@@ -289,12 +294,17 @@ representations are literally compared.</p>
 <h3>Serializing Simple Selectors</h3>
 
 <p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representation is defined for an invalid simple selector selector.</p>
+representation is defined for an invalid <a href="#simple-selector">simple
+selector</a>.</p>
 
 <p>To 
 <dfn id=algorithm-serialize-a-simple-selector title="serialize a simple selector">serialize
 a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>,
 the following algorithm <em class=rfc2119>MUST</em> be used:</p>
+<ol>
+<li>Let <dfn id=var-r><var>r</var></dfn> an empty string.</li>
+<li>Process <var>ss</var> as following:
+
 <dl class=switch>
 <dt>If <var>ss</var> is a type or universal selector</dt>
   <dd>
@@ -308,7 +318,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
       prefix)</dt>
         <dd>Append a <code class=char>U+007C</code>
         <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
-        character to <var>result</var>.</dd>
+        character to <var>r</var>.</dd>
       <dt>If no namespace is specified (by namespace prefix <code>*</code>,
       or by omitting namespace prefix where no default namespace is
       specified)</dt>
@@ -316,15 +326,15 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
         <code class=charname>ASTERISK</code> (<code class=char>*</code>)
         character, followed by a <code class=char>U+007C</code>
         <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
-        character, to <var>result</var>.</dd>
+        character, to <var>r</var>.</dd>
       </dl>
     </li>
     <li>If <var>ss</var> is a type selector, append the
     <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a> 
-    local name to <var>result</var>.</li>
+    local name to <var>r</var>.</li>
     <li>If <var>ss</var> is a universal selector, append 
     a <code class=char>U+002A</code> <code class=charname>ASTERISK</code>
-    (<code class=char>*</code>) character to <var>result</var>.</li>
+    (<code class=char>*</code>) character to <var>r</var>.</li>
     </ol>
   </dd>
 <dt>If <var>ss</var> is an attribute selector</dt>
@@ -332,7 +342,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     <ol>
     <li>Append a <code class=char>U+005B</code> <code class=charname>LEFT
     SQUARE BRACKET</code> (<code class=char>[</code>) to 
-    <var>result</var>.</li>
+    <var>r</var>.</li>
     <li>
       Append a namespace prefix as following:
       <dl>
@@ -343,52 +353,52 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
       <dt>If the null namespace is specified</dt>
         <dd>Append a <code class=char>U+007C</code>
         <code class=charname>VERTICAL BAR</code> character to
-        <var>result</var>.</dd>
+        <var>r</var>.</dd>
       <dt>If no namespace is specified</dt>
         <dd>Append a <code class=char>U+002A</code>
         <code class=charname>ASTERISK</code> (<code class=char>*</code>)
         character, followed by a <code class=char>U+007C</code>
         <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
-        character, to <var>result</var>.</dd>
+        character, to <var>r</var>.</dd>
       </dl>
     </li>
     <li>Append the
     <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-    local name to <var>result</var>.</li>
+    local name to <var>r</var>.</li>
     <li>If a value is specified in <var>ss</var>:
       <ol>
       <li>Depending on the way to match, append <code>=</code>, 
       <code>~=</code>, <code>|=</code>, <code>^=</code>,
-      <code>$=</code>, or <code>*=</code> to <var>result</var>.</li>
+      <code>$=</code>, or <code>*=</code> to <var>r</var>.</li>
       <li>Append the
       <a href="#algorithm-normalize-a-string" title="normalize a string">normalized</a>
-      value to <var>result</var>.</li>
+      value to <var>r</var>.</li>
       </ol>
     </li>
     <li>Append a <code class=char>U+005D</code> <code class=charname>RIGHT
     SQUARE BRACKET</code> (<code class=char>]</code>) to
-    <var>result</var>.</li>
+    <var>r</var>.</li>
     </ol>
   </dd>
 <dt>If <var>ss</var> is a class selector</dt>
   <dd>Append a <code class=char>U+002E</code> <code class=charname>FULL
   STOP</code> (<code class=char>.</code>) character, followed
   by <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-  class name, <var>result</var>.</dd>
+  class name, to <var>r</var>.</dd>
 <dt>If <var>ss</var> is an <abbr>ID</abbr> selector</dt>
   <dd>Append a <code class=char>U+0023</code> <code class=charname>NUMBER
   SIGN</code> (<code class=char>#</code>) character, followed
   by <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-  <abbr>ID</abbr>, to <var>result</var>.</dd>
+  <abbr>ID</abbr>, to <var>r</var>.</dd>
 <dt>If <var>ss</var> is a pseudo‐class selector</dt>
   <dd>
     <ol>
     <li>Append a <code class=char>U+003A</code> 
     <code class=charname>COLON</code> (<code class=char>:</code>) character
-    to <var>result</var>.</li>
+    to <var>r</var>.</li>
     <li>Append the
     <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-    name of the pseudo‐class to <var>result</var>.</li>
+    name of the pseudo‐class to <var>r</var>.</li>
     <li>Append any arguments as following:
       <dl class=switch>
       <dt>If the name of the pseudo‐class is <code>lang</code></dt>
@@ -396,14 +406,14 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           <ol>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
           PARENTHESIS</code> (<code class=char>(</code>) character
-          to <var>result</var>.</li>
+          to <var>r</var>.</li>
           <li>Append the
           <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-          language tag (the argument) to <var>result</var>.</li>
+          language tag (the argument) to <var>r</var>.</li>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code> 
           (<code class=char>)</code>) character
-          to <var>result</var>.</li>
+          to <var>r</var>.</li>
           </ol>
         </dd>
       <dt>If the name of the pseudo‐class is
@@ -412,14 +422,14 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           <ol>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
           PARENTHESIS</code> (<code class=char>(</code>) character
-          to <var>result</var>.</li>
+          to <var>r</var>.</li>
           <li>Append the
           <a href="#algorithm-normalize-a-string" title="normalize a string">normalized</a>
-          string (the argument) to <var>result</var>.</li>
+          string (the argument) to <var>r</var>.</li>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code> 
           (<code class=char>)</code>) character
-          to <var>result</var>.</li>
+          to <var>r</var>.</li>
           </ol>
         </dd>
       <dt>If name of the pseudo‐class is either <code>nth-child</code>,
@@ -429,9 +439,9 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           <ol>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
           PARENTHESIS</code> (<code class=char>(</code>) character
-          to <var>result</var>.</li>
+          to <var>r</var>.</li>
           <li>Append <span class=ed>@@ normalized</span>
-          integer <var>a</var> to <var>result</var>.
+          integer <var>a</var> to <var>r</var>.
           If the argument is a keyword <code>odd</code> or <code>even</code>,
           <var>a</var> is <code>2</code>.  If <var>a</var> and
           <code>n</code> is omitted, <var>a</var> is assumed as
@@ -442,9 +452,9 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           character).</li>
           <li>Append a <code class=char>U+006E</code> 
           <code class=charname>LATIN SMALL LETTER N</code>
-          (<code class=char>n</code>) character to <var>result</var>.</li>
+          (<code class=char>n</code>) character to <var>r</var>.</li>
           <li>Append <span class=ed>@@ normalized</span>
-          integer <var>b</var> to <var>result</var>.
+          integer <var>b</var> to <var>r</var>.
           It <em class=rfc2119>MUST</em> be preceded by a sign,
           either <code class=char>U+002B</code> <code class=charname>PLUS
           SIGN</code> (<code class=char>+</code>) or
@@ -461,7 +471,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code>
           (<code class=char>)</code>) character
-          to <var>result</var>.</li>
+          to <var>r</var>.</li>
           </ol>
         </dd>
       <dt>If the name of the pseudo‐class is <code>not</code></dt>
@@ -475,27 +485,33 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
             <code class=charname>LATIN SMALL LETTER T</code>, and
             <code class=char>U+0028</code> <code class=charname>LEFT
             PARENTHESIS</code> (<code>:not(</code>), followed by a
-            <a href="#newline">newline</a>, to <var>result</var>.</li>
+            <a href="#newline">newline</a>, to <var>r</var>.</li>
             <li>Append four <code class=char>U+0020</code>
             <code class=charname>SPACE</code> characters to 
-            <var>result</var>.</li>
+            <var>r</var>.</li>
             <li>Append four <code class=char>U+0020</code>
             <code class=charname>SPACE</code> characters to 
-            <var>result</var> again.</li>
+            <var>r</var> again.</li>
             <li><a href="#algorithm-serialize-a-simple-selector">Serialize
             the simple selector specified as the argument to the
             <code>not</code> pseudo‐class</a>.</li>
             <li>Append a <a href="#newline">newline</a> to
-            <var>result</var>.</li>
+            <var>r</var>.</li>
             <li>Append four <code class=char>U+0020</code>
             <code class=charname>SPACE</code> characters to
-            <var>result</var>.</li>
+            <var>r</var>.</li>
             <li>Append a <code class=char>U+0029</code>
             <code class=charname>RIGHT PARENTHESIS</code>
             (<code class=char>)</code>) character
-            to <var>result</var>.</li>
+            to <var>r</var>.</li>
           </ol>
         </dd>
+      <dt>Otherwise</dt>
+        <dd>The pseudo‐class is not supported by this version of 
+        <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+        and therefore no 
+        <abbr title="Selectors Serialization Format for Testing">SSFT</abbr> 
+        representation is defined for <var>ss</var>.  Stop the algorithm.</dd>
       </dl>
     </li>
     </ol>
@@ -505,14 +521,25 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     <ol>
     <li>Append two <code class=char>U+003A</code>
     <code class=charname>COLON</code> characters (<code>::</code>)
-    to <var>result</var>.</li>
+    to <var>r</var>.</li>
     <li>Append the
     <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-    name of the pseudo‐element to <var>result</var>.</li>
-    <!-- For future version: append "(", arguments, ")", if any. -->
+    name of the pseudo‐element to <var>r</var>.</li>
+    <li>If the pseudo‐element has any arguments:
+        The pseudo‐element is not supported by this version of 
+        <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+        and therefore no 
+        <abbr title="Selectors Serialization Format for Testing">SSFT</abbr> 
+        representation is defined for <var>ss</var>.  Stop the algorithm.
+    </li>
     </ol>
   </dd>
 </dl>
+</li>
+<li>Then, <var>r</var> is the
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation of <var>ss</var>.</li>
+</ol>
 
 </div>
 
@@ -538,7 +565,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
   <li>Append four <code class=char>U+0020</code>
   <code class=charname>SPACE</code> characters to <var>result</var>.</li>
   <li>Process each sequence of simple selectors or
-  combinator in <var>selector</var> by following algorithm:
+  combinator in <var>selector</var> as following:
     <dl class=switch>
     <dt>If it is a sequence of simle selector 
     (<dfn id=var-sss><var>sss</var></dfn>)</dt>
@@ -555,7 +582,8 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
         <ol>
         <li>Append two <code class=char>U+0020</code>
         <code class=charname>SPACE</code> characters to <var>result</var>.</li>
-        <li>
+        <li>Process <var>c</var> as following:
+
           <dl class=switch>
           <dt>If <var>c</var> is descendant combinator (white space)</dt>
             <dd>Append a <code class=char>U+0020</code>
