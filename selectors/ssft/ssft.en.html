@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft <time datetime=2007-10-15>15 October 2007</time></h2>
+<h2>Working Draft <time datetime=2007-10-22>22 October 2007</time></h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -252,7 +252,8 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
       </dl>
     </li>
     <li>If <var>ss</var> is a type selector, append the
-    <span class=ed>@@ normalized</span> local name to <var>result</var>.</li>
+    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a> 
+    local name to <var>result</var>.</li>
     <li>If <var>ss</var> is a universal selector, append 
     a <code class=char>U+002A</code> <code class=charname>ASTERISK</code>
     (<code class=char>*</code>) character to <var>result</var>.</li>
@@ -283,15 +284,17 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
         character, to <var>result</var>.</dd>
       </dl>
     </li>
-    <li>Append the <span class=ed>@@ normalized</span> local name to
-    <var>result</var>.</li>
+    <li>Append the
+    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+    local name to <var>result</var>.</li>
     <li>If a value is specified in <var>ss</var>:
       <ol>
       <li>Depending on the way to match, append <code>=</code>, 
       <code>~=</code>, <code>|=</code>, <code>^=</code>,
       <code>$=</code>, or <code>*=</code> to <var>result</var>.</li>
-      <li>Append the <span class=ed>@@ normalized</span> value to
-      <var>result</var>.</li>
+      <li>Append the
+      <a href="#algorithm-normalize-a-string" title="normalize a string">normalized</a>
+      value to <var>result</var>.</li>
       </ol>
     </li>
     <li>Append a <code class=char>U+005D</code> <code class=charname>RIGHT
@@ -302,21 +305,22 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
 <dt>If <var>ss</var> is a class selector</dt>
   <dd>Append a <code class=char>U+002E</code> <code class=charname>FULL
   STOP</code> (<code class=char>.</code>) character, followed
-  by <span class=ed>@@ normalized</span> class name,
-  <var>result</var>.</dd>
+  by <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+  class name, <var>result</var>.</dd>
 <dt>If <var>ss</var> is an <abbr>ID</abbr> selector</dt>
   <dd>Append a <code class=char>U+0023</code> <code class=charname>NUMBER
   SIGN</code> (<code class=char>#</code>) character, followed
-  by <span class=ed>@@ normalized</span> <abbr>ID</abbr>,
-  to <var>result</var>.</dd>
+  by <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+  <abbr>ID</abbr>, to <var>result</var>.</dd>
 <dt>If <var>ss</var> is a pseudo‐class selector</dt>
   <dd>
     <ol>
     <li>Append a <code class=char>U+003A</code> 
     <code class=charname>COLON</code> (<code class=char>:</code>) character
     to <var>result</var>.</li>
-    <li>Append the <span class=ed>@@ normalized</span> name of the 
-    pseudo‐class to <var>result</var>.</li>
+    <li>Append the
+    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+    name of the pseudo‐class to <var>result</var>.</li>
     <li>Append any arguments as following:
       <dl class=switch>
       <dt>If the name of the pseudo‐class is <code>lang</code></dt>
@@ -325,7 +329,8 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
           PARENTHESIS</code> (<code class=char>(</code>) character
           to <var>result</var>.</li>
-          <li>Append <span class=ed>@@ normalized</span> 
+          <li>Append the
+          <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
           language tag (the argument) to <var>result</var>.</li>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code> 
@@ -340,7 +345,8 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
           PARENTHESIS</code> (<code class=char>(</code>) character
           to <var>result</var>.</li>
-          <li>Append <span class=ed>@@ normalized</span> 
+          <li>Append the
+          <a href="#algorithm-normalize-a-string" title="normalize a string">normalized</a>
           string (the argument) to <var>result</var>.</li>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code> 
@@ -432,13 +438,99 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
     <li>Append two <code class=char>U+003A</code>
     <code class=charname>COLON</code> characters (<code>::</code>)
     to <var>result</var>.</li>
-    <li>Append the <span class=ed>@@ normalized</span> name of the
-    pseudo‐element to <var>result</var>.</li>
+    <li>Append the
+    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+    name of the pseudo‐element to <var>result</var>.</li>
     <!-- For future version: append "(", arguments, ")", if any. -->
     </ol>
   </dd>
 </dl>
 
+<p>To <dfn id=algorithm-normalize-an-ident title="normalize an IDENT">normalize
+an <code>IDENT</code> (<dfn id=var-n><var>n</var></dfn>)</dfn>:</p>
+<ol>
+<li>Replace the escape sequences (<code>\</code> and following 
+characters) in <var>n</var> by characters represented by them
+respectively.</li>
+<li>If there is any character that is <em>not</em> one of 
+<code class=char>U+002D</code> <code class=charname>HYPHEN-MINUS</code> 
+(<code class=char>-</code>), <code class=char>U+0030</code>
+<code class=charname>DIGIT ZERO</code> 
+(<code class=char>0</code>) to <code class=char>U+0039</code> 
+<code class=charname>DIGIT NINE</code> (<code class=char>9</code>),
+<code class=char>U+0041</code> <code class=charname>LATIN CAPITAL LETTER
+A</code> (<code class=char>A</code>) to <code class=char>U+005A</code> 
+<code class=charname>LATIN CAPITAL LETTER Z</code> (<code class=char>Z</code>),
+<code class=char>U+005F</code> <code class=charname>LOW LINE</code>
+(<code class=char>_</code>), <code class=char>U+0061</code> 
+<code class=charname>LATIN SMALL LETTER A</code> 
+(<code class=char>a</code>) to <code class=char>U+006A</code>
+<code class=charname>LATIN SMALL LETTER Z</code> (<code class=char>z</code>),
+<code class=char>U+0080</code> to <code class=char>U+D7FF</code>, or
+<code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in
+<var>n</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
+<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
+hexadecimal representation of the character.  If the character
+is outside the range of <code>[<code class=char>U+0000</code>, 
+<code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
+<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</li>
+<li>If the first character in <var>n</var> is one of 
+<code class=char>U+0030</code> <code class=charname>DIGIT ZERO</code> 
+(<code class=char>0</code>) to <code class=char>U+0039</code>
+<code class=charname>DIGIT NINE</code> (<code class=char>9</code>),
+then prepend a string <code>\00003</code> at the beginning of 
+<var>n</var>.</li>
+<li>If the first character in <var>n</var> is <code class=char>U+002D</code>
+<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>) and
+the second character, if any, is <em>not</em> one of 
+<code class=char>U+0041</code> <code class=charname>LATIN CAPITAL LETTER
+A</code> (<code class=char>A</code>) to <code class=char>U+005A</code> 
+<code class=charname>LATIN CAPITAL LETTER Z</code> (<code class=char>Z</code>),
+<code class=char>U+005F</code> <code class=charname>LOW LINE</code>
+(<code class=char>_</code>), <code class=char>U+0061</code> 
+<code class=charname>LATIN SMALL LETTER A</code> 
+(<code class=char>a</code>) to <code class=char>U+006A</code>
+<code class=charname>LATIN SMALL LETTER Z</code> (<code class=char>z</code>),
+<code>U+0080</code> to <code>U+D7FF</code>, or
+<code>U+E000</code> to <code>U+10FFFF</code>, or
+<var>n</var> is equal to <code class=char>U+002D</code>
+<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>), then
+replace the <code class=char>U+002D</code>
+<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
+character by string <code>\00002D</code>.</li>
+<li>Then, <var>n</var> is the result of the algorithm.</li>
+</ol>
+
+<p>To <dfn id=algorithm-normalize-a-string title="normalize a STRING">normalize
+a <code>STRING</code> (<dfn id=var-s><var>s</var></dfn>)</dfn>:</p>
+<ol>
+<li>Replace the escape sequences (<code>\</code> and following 
+characters) in <var>s</var> by characters represented by them
+(or an empty string if <code>\</code> is immediately followed by
+newline character(s)) respectively.</li>
+<li>Remove the quotation characters in <var>s</var>
+if <var>s</var> is a <code>STRING</code>.</li>
+<li>If there is any character that is <em>not</em> one of 
+<code class=char>U+0020</code> <code class=charname>SPACE</code>,
+<code class=char>U+0021</code> <code class=charname>EXCLAMATION MARK</code>
+(<code class=char>!</code>), <code class=char>U+0023</code> 
+<code class=charname>NUMBER SIGN</code> (<code class=char>#</code>) to
+<code class=char>U+005B</code> <code class=charname>LEFT SQUARE
+BRACKET</code>, <code class=char>U+005D</code> <code class=charname>RIGHT
+SQUARE BRACKET</code> to <code class=char>U+D7FF</code>, or
+<code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in 
+<var>s</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
+<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
+hexadecimal representation of the character.  If the character
+is outside the range of <code>[<code class=char>U+0000</code>, 
+<code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
+<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</li>
+<li>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
+MARK</code> (<code class=char>"</code>) at the beginning of <var>s</var>.</li>
+<li>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
+MARK</code> (<code class=char>"</code>) at the end of <var>s</var>.</li>
+<li>Then, <var>s</var> is the result of the algorithm.</li>
+</ol>
 
 <p>A <dfn id=newline title=newline>newline</dfn> 
 <em class=rfc2119>SHOULD</em> be represented as a
