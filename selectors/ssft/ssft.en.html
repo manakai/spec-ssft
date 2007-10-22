@@ -140,7 +140,7 @@ simple selector in a selector.</p>
 </div>
 
 <div class="section" id="serializing">
-<h2>Serializing in 
+<h2>Serializing Selectors as
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 Representation</h2>
 
@@ -519,13 +519,18 @@ character by string <code>\00002D</code>.</li>
 <p>To <dfn id=algorithm-normalize-a-string title="normalize a STRING">normalize
 a <code>STRING</code> (<dfn id=var-s><var>s</var></dfn>)</dfn>:</p>
 <ol>
-<li>Replace the escape sequences (<code>\</code> and following 
+<li><p>Replace the escape sequences (<code>\</code> and following 
 characters) in <var>s</var> by characters represented by them
 (or an empty string if <code>\</code> is immediately followed by
-newline character(s)) respectively.</li>
-<li>Remove the quotation characters in <var>s</var>
-if <var>s</var> is a <code>STRING</code>.</li>
-<li>If there is any character that is <em>not</em> one of 
+newline character(s)) respectively.</p></li>
+<li><p>Remove the quotation characters in <var>s</var>
+if <var>s</var> is a <code>STRING</code>.</p>
+
+<div class="note memo">
+<p>The input <var>s</var> to this algorithm may be an
+<code>IDENT</code>.</p>
+</div></li>
+<li><p>If there is any character that is <em>not</em> one of 
 <code class=char>U+0020</code> <code class=charname>SPACE</code>,
 <code class=char>U+0021</code> <code class=charname>EXCLAMATION MARK</code>
 (<code class=char>!</code>), <code class=char>U+0023</code> 
@@ -539,12 +544,13 @@ SQUARE BRACKET</code> to <code class=char>U+D7FF</code>, or
 hexadecimal representation of the character.  If the character
 is outside the range of <code>[<code class=char>U+0000</code>, 
 <code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
-<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</li>
-<li>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
-MARK</code> (<code class=char>"</code>) at the beginning of <var>s</var>.</li>
-<li>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
-MARK</code> (<code class=char>"</code>) at the end of <var>s</var>.</li>
-<li>Then, <var>s</var> is the result of the algorithm.</li>
+<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</p></li>
+<li><p>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
+MARK</code> (<code class=char>"</code>) at the beginning of 
+<var>s</var>.</p></li>
+<li><p>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
+MARK</code> (<code class=char>"</code>) at the end of <var>s</var>.</p></li>
+<li><p>Then, <var>s</var> is the result of the algorithm.</p></li>
 </ol>
 
 <p>A <dfn id=newline title=newline>newline</dfn> 
