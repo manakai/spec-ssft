@@ -148,7 +148,7 @@ simple selector in a selector.</p>
 </div>
 
 <div class="section" id="serializing">
-<h2>Serializing Selectors as
+<h2>Serializing Selectors in
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 Representation</h2>
 
@@ -287,6 +287,11 @@ representation.</p>
 representations are literally compared.</p>
 </div>
 
+<div class="issue ed">
+<p>Need to define <dfn id=lower-case>lower‐case</dfn>.
+It is tr/A-Z/a-z/ for now.</p>
+</div>
+
 </div>
 
 
@@ -309,7 +314,8 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <dt>If <var>ss</var> is a type or universal selector</dt>
   <dd>
     <ol>
-    <li>
+    <li>Append a namespace prefix as following:
+
       <dl class=switch>
       <dt>If a namespace URI is specified (via namespace prefix, or
       by omitting namespace prefix where a default namespace is specified)</dt>
@@ -398,7 +404,8 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     to <var>r</var>.</li>
     <li>Append the
     <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-    name of the pseudo‐class to <var>r</var>.</li>
+    name (in <a href="#lower-case">lower‐case</a>) of the pseudo‐class to
+    <var>r</var>.</li>
     <li>Append any arguments as following:
       <dl class=switch>
       <dt>If the name of the pseudo‐class is <code>lang</code></dt>
@@ -409,7 +416,8 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           to <var>r</var>.</li>
           <li>Append the
           <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-          language tag (the argument) to <var>r</var>.</li>
+          language tag (the argument) to <var>r</var>.
+          <span class="issue ed">Should we normalize cases?</span></li>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code> 
           (<code class=char>)</code>) character
@@ -524,7 +532,8 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     to <var>r</var>.</li>
     <li>Append the
     <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
-    name of the pseudo‐element to <var>r</var>.</li>
+    name (in <a href="#lower-case">lower‐case</a>) of the pseudo‐element
+    to <var>r</var>.</li>
     <li>If the pseudo‐element has any arguments:
         The pseudo‐element is not supported by this version of 
         <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
@@ -547,7 +556,9 @@ representation of <var>ss</var>.</li>
 <h3>Serializing Groups of Selectors</h3>
 
 <p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representation is defined for an invalid group of selectors.</p>
+representation is defined for an invalid 
+<a href="http://www.w3.org/TR/css3-selectors/#grouping">group of 
+selectors</a>.</p>
 
 <p>To 
 <dfn id=algorithm-serialize-a-group-of-selectors title="serialize a group of selectors">serialize
@@ -559,7 +570,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <var>gs</var>:
   <ol>
   <li>If <var>selector</var> is <em>not</em> the first selector
-  in the group of selectors, then append a <code class=char>U+002C</code>
+  in the <var>gs</var>, then append a <code class=char>U+002C</code>
   <code class=charname>COMMA</code> (<code class=char>,</code>) followed by a
   <a href="#newline">newline</a> to <var>result</var>.</li>
   <li>Append four <code class=char>U+0020</code>
@@ -626,18 +637,28 @@ representation of <var>gs</var>.</li>
 <div class="section" id="parsing">
 <h2>Parsing 
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-Groups of Selectors</h2>
+Representations of Selectors</h2>
 
-<p>Since <a href="#serializing">the serializing algorithm</a> is 
-so designed that it always output a valid 
-<a href="http://www.w3.org/TR/css3-selectors/#grouping">group of
+<p>Since <a href="#algorithm-serialize-a-group-of-selectors">the serializing 
+algorithm for groups of selectors</a> is so designed that it always outputs a
+valid <a href="http://www.w3.org/TR/css3-selectors/#grouping">group of
 selectors</a>, no special parser for the
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 representation is necessary.  Any conforming parser for
 <a href="http://www.w3.org/TR/css3-selectors/#grouping">groups of
 selectors</a> <em class=rfc2119>MAY</em> be used
 to parse <abbr title="Selectors Serialization Format for Testing">SSFT</abbr> 
-representations of groups of selectors.</p>
+representations of 
+<a href="http://www.w3.org/TR/css3-selectors/#grouping">groups of 
+selectors</a>.</p>
+
+<p>Likewise, <a href="#algorithm-serialize-a-simple-selector">the serializing
+algorithm for simple selectors</a> always outputs a valid
+<a href="#simple-selector">simple selector</a> and therefore any
+conforming parser for <a href="#simple-selector">simple selector</a>
+<em class=rfc2119>MAY</em> be used to parse 
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representations of <a href="#simple-selector">simple selectors</a>.</p>
 </div>
 
 <div class="section" id="examples">
@@ -673,7 +694,7 @@ by choosing <q>Selectors</q> radio button.</p>
   <a href="urn:ietf:bcp:14"><abbr title="Best Current Practice">BCP</abbr> 
   14</a>, <abbr title="Request for Comments">RFC</abbr> 2119, 
   <time datetime=1997-03>March 1997</time>.
-  This version of the specification is referenced</dd>
+  This version of the specification is referenced.</dd>
 <dt id=ref-SELECTORS>SELECTORS</dt>
   <dd><a href="http://www.w3.org/TR/2005/WD-css3-selectors-20051215"><cite>Selectors</cite></a>,
   <abbr title="World Wide Web Consortium">W3C</abbr> Working Draft,
