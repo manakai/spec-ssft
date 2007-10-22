@@ -140,12 +140,17 @@ simple selector in a selector.</p>
 </div>
 
 <div class="section" id="serializing">
-<h2>Serializing Groups of Selectors</h2>
+<h2>Serializing in 
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+Representation</h2>
 
 <div class="issue ed">
 <p><a href="http://suika.fam.cx/gate/cvs/*checkout*/markup/html/whatpm/Whatpm/CSS/SelectorsSerializer.pm">See the reference implementation</a>
 for now.</p>
 </div>
+
+<div class=section id=serializing-groups-of-selectors>
+<h3>Serializing Groups of Selectors</h3>
 
 <p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 representation is defined for an invalid group of selectors.</p>
@@ -223,6 +228,11 @@ a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>:</p>
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 representation of <var>gs</var>.</li>
 </ol>
+
+</div>
+
+<div class=section id=serializing-simple-selectors>
+<h3>Serializing Simple Selectors</h3>
 
 <p>To 
 <dfn id=algorithm-serialize-a-simple-selector title="serialize a simple selector">serialize
@@ -446,6 +456,11 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
   </dd>
 </dl>
 
+</div>
+
+<div class=section id=serializing-tokens>
+<h3>Serializing Tokens</h3>
+
 <p>To <dfn id=algorithm-normalize-an-ident title="normalize an IDENT">normalize
 an <code>IDENT</code> (<dfn id=var-n><var>n</var></dfn>)</dfn>:</p>
 <ol>
@@ -553,6 +568,8 @@ representation.</p>
 <p>Therefore, newlines must be normalized before 
 <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 representations are literally compared.</p>
+</div>
+
 </div>
 
 </div>
