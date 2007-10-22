@@ -149,87 +149,126 @@ Representation</h2>
 for now.</p>
 </div>
 
-<div class=section id=serializing-groups-of-selectors>
-<h3>Serializing Groups of Selectors</h3>
+<div class=section id=serializing-tokens>
+<h3>Serializing Tokens</h3>
 
-<p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representation is defined for an invalid group of selectors.</p>
-
-<div class="note memo">
-<p>The serialized representation will not contain any comment.</p>
-</div>
-
-<!-- TODO: link terms to Selectors -->
-
-<p>To 
-<dfn id=algorithm-serialize-a-group-of-selectors title="serialize a group of selectors">serialize
-a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>:</p>
+<p>To <dfn id=algorithm-normalize-an-ident title="normalize an IDENT">normalize
+an <code>IDENT</code> (<dfn id=var-n><var>n</var></dfn>)</dfn>:</p>
 <ol>
-<li>Let <dfn id=var-result><var>result</var></dfn> an empty string.</li>
-<li>For each selector (<dfn id=var-selector><var>selector</var></dfn>) in 
-<var>gs</var>:
-  <ol>
-  <li>If <var>selector</var> is <em>not</em> the first selector
-  in the group of selectors, then append a <code class=char>U+002C</code>
-  <code class=charname>COMMA</code> (<code class=char>,</code>) followed by a
-  <a href="#newline">newline</a> to <var>result</var>.</li>
-  <li>Append four <code class=char>U+0020</code>
-  <code class=charname>SPACE</code> characters to <var>result</var>.</li>
-  <li>Process each sequence of simple selectors or
-  combinator in <var>selector</var> by following algorithm:
-    <dl class=switch>
-    <dt>If it is a sequence of simle selector 
-    (<dfn id=var-sss><var>sss</var></dfn>)</dt>
-      <dd>
-        <ol>
-        <li class=ed><a href="#algorithm-serialize-a-simple-selector">Serialize
-        each simple selector</a> in <var>sss</var>.</li>
-        <li class=ed>sort</li>
-        <li>Append a <a href="#newline">newline</a> to <var>result</var>.</li>
-        </ol>
-      </dd>
-    <dt>If it is a combinator (<dfn id=var-c><var>c</var></dfn>)</dt>
-      <dd>
-        <ol>
-        <li>Append two <code class=char>U+0020</code>
-        <code class=charname>SPACE</code> characters to <var>result</var>.</li>
-        <li>
-          <dl class=switch>
-          <dt>If <var>c</var> is descendant combinator (white space)</dt>
-            <dd>Append a <code class=char>U+0020</code>
-            <code class=charname>SPACE</code> character to
-            <var>result</var>.</dd>
-          <dt>If <var>c</var> is child combinator
-          (<code class=char>></code>)</dt>
-            <dd>Append a <code class=char>U+003E</code>
-            <code class=charname>GREATER-THAN SIGN</code>
-            (<code class=char>></code>) character to <var>result</var>.</dd>
-          <dt>If <var>c</var> is adjacent sibling combinator
-          (<code class=char>+</code>)</dt>
-            <dd>Append a <code class=char>U+002B</code>
-            <code class=charname>PLUS SIGN</code> (<code class=char>+</code>)
-            character to <var>result</var>.</dd>
-          <dt>If <var>c</var> is general sibling combinator
-          (<code class=char>~</code>)</dt>
-            <dd>Append a <code class=char>U+007E</code>
-            <code class=charname>TILDE</code> (<code class=char>~</code>)
-            character to <var>result</var>.</dd>
-          </dl>
-        </li>
-        <li>Append a <code class=char>U+0020</code>
-        <code class=charname>SPACE</code> character to
-        <var>result</var>.</li>
-        </ol>
-      </dd>
-    </dl>
-  </ol>
-</li>
-<li>Then, <var>result</var> is the 
-<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representation of <var>gs</var>.</li>
+<li>Replace the escape sequences (<code>\</code> and following 
+characters) in <var>n</var> by characters represented by them
+respectively.</li>
+<li>If there is any character that is <em>not</em> one of 
+<code class=char>U+002D</code> <code class=charname>HYPHEN-MINUS</code> 
+(<code class=char>-</code>), <code class=char>U+0030</code>
+<code class=charname>DIGIT ZERO</code> 
+(<code class=char>0</code>) to <code class=char>U+0039</code> 
+<code class=charname>DIGIT NINE</code> (<code class=char>9</code>),
+<code class=char>U+0041</code> <code class=charname>LATIN CAPITAL LETTER
+A</code> (<code class=char>A</code>) to <code class=char>U+005A</code> 
+<code class=charname>LATIN CAPITAL LETTER Z</code> (<code class=char>Z</code>),
+<code class=char>U+005F</code> <code class=charname>LOW LINE</code>
+(<code class=char>_</code>), <code class=char>U+0061</code> 
+<code class=charname>LATIN SMALL LETTER A</code> 
+(<code class=char>a</code>) to <code class=char>U+006A</code>
+<code class=charname>LATIN SMALL LETTER Z</code> (<code class=char>z</code>),
+<code class=char>U+0080</code> to <code class=char>U+D7FF</code>, or
+<code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in
+<var>n</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
+<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
+hexadecimal representation of the character.  If the character
+is outside the range of <code>[<code class=char>U+0000</code>, 
+<code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
+<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</li>
+<li>If the first character in <var>n</var> is one of 
+<code class=char>U+0030</code> <code class=charname>DIGIT ZERO</code> 
+(<code class=char>0</code>) to <code class=char>U+0039</code>
+<code class=charname>DIGIT NINE</code> (<code class=char>9</code>),
+then prepend a string <code>\00003</code> at the beginning of 
+<var>n</var>.</li>
+<li>If the first character in <var>n</var> is <code class=char>U+002D</code>
+<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>) and
+the second character, if any, is <em>not</em> one of 
+<code class=char>U+0041</code> <code class=charname>LATIN CAPITAL LETTER
+A</code> (<code class=char>A</code>) to <code class=char>U+005A</code> 
+<code class=charname>LATIN CAPITAL LETTER Z</code> (<code class=char>Z</code>),
+<code class=char>U+005F</code> <code class=charname>LOW LINE</code>
+(<code class=char>_</code>), <code class=char>U+0061</code> 
+<code class=charname>LATIN SMALL LETTER A</code> 
+(<code class=char>a</code>) to <code class=char>U+006A</code>
+<code class=charname>LATIN SMALL LETTER Z</code> (<code class=char>z</code>),
+<code>U+0080</code> to <code>U+D7FF</code>, or
+<code>U+E000</code> to <code>U+10FFFF</code>, or
+<var>n</var> is equal to <code class=char>U+002D</code>
+<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>), then
+replace the <code class=char>U+002D</code>
+<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
+character by string <code>\00002D</code>.</li>
+<li>Then, <var>n</var> is the result of the algorithm.</li>
 </ol>
 
+<p>To <dfn id=algorithm-normalize-a-string title="normalize a STRING">normalize
+a <code>STRING</code> (<dfn id=var-s><var>s</var></dfn>)</dfn>:</p>
+<ol>
+<li><p>Replace the escape sequences (<code>\</code> and following 
+characters) in <var>s</var> by characters represented by them
+(or an empty string if <code>\</code> is immediately followed by
+newline character(s)) respectively.</p></li>
+<li><p>Remove the quotation characters in <var>s</var>
+if <var>s</var> is a <code>STRING</code>.</p>
+
+<div class="note memo">
+<p>The input <var>s</var> to this algorithm may be an
+<code>IDENT</code>.</p>
+</div></li>
+<li><p>If there is any character that is <em>not</em> one of 
+<code class=char>U+0020</code> <code class=charname>SPACE</code>,
+<code class=char>U+0021</code> <code class=charname>EXCLAMATION MARK</code>
+(<code class=char>!</code>), <code class=char>U+0023</code> 
+<code class=charname>NUMBER SIGN</code> (<code class=char>#</code>) to
+<code class=char>U+005B</code> <code class=charname>LEFT SQUARE
+BRACKET</code>, <code class=char>U+005D</code> <code class=charname>RIGHT
+SQUARE BRACKET</code> to <code class=char>U+D7FF</code>, or
+<code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in 
+<var>s</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
+<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
+hexadecimal representation of the character.  If the character
+is outside the range of <code>[<code class=char>U+0000</code>, 
+<code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
+<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</p></li>
+<li><p>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
+MARK</code> (<code class=char>"</code>) at the beginning of 
+<var>s</var>.</p></li>
+<li><p>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
+MARK</code> (<code class=char>"</code>) at the end of <var>s</var>.</p></li>
+<li><p>Then, <var>s</var> is the result of the algorithm.</p></li>
+</ol>
+
+<p>A <dfn id=newline title=newline>newline</dfn> 
+<em class=rfc2119>SHOULD</em> be represented as a
+<code class=char>U+000A</code> <code class=charname>LINE FEED</code>
+character.  However, depending on the context where
+the <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation is in use, a sequence of 
+<code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
+followed by a <code class=char>U+000A</code> 
+<code class=charname>LINE FEED</code> (i.e. a
+<code>CRLF</code> sequence) or a character
+<code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
+<em class=rfc2119>MAY</em> be used as a <a href="#newline">newline</a> instead.
+<a href="#newline">Newline</a> representations 
+<em class=rfc2119>SHOULD</em> be consistent in an
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation.</p>
+
+<div class="note memo">
+<p>Therefore, newlines must be normalized before 
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representations are literally compared.</p>
 </div>
+
+</div>
+
 
 <div class=section id=serializing-simple-selectors>
 <h3>Serializing Simple Selectors</h3>
@@ -458,123 +497,85 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
 
 </div>
 
-<div class=section id=serializing-tokens>
-<h3>Serializing Tokens</h3>
+<div class=section id=serializing-groups-of-selectors>
+<h3>Serializing Groups of Selectors</h3>
 
-<p>To <dfn id=algorithm-normalize-an-ident title="normalize an IDENT">normalize
-an <code>IDENT</code> (<dfn id=var-n><var>n</var></dfn>)</dfn>:</p>
-<ol>
-<li>Replace the escape sequences (<code>\</code> and following 
-characters) in <var>n</var> by characters represented by them
-respectively.</li>
-<li>If there is any character that is <em>not</em> one of 
-<code class=char>U+002D</code> <code class=charname>HYPHEN-MINUS</code> 
-(<code class=char>-</code>), <code class=char>U+0030</code>
-<code class=charname>DIGIT ZERO</code> 
-(<code class=char>0</code>) to <code class=char>U+0039</code> 
-<code class=charname>DIGIT NINE</code> (<code class=char>9</code>),
-<code class=char>U+0041</code> <code class=charname>LATIN CAPITAL LETTER
-A</code> (<code class=char>A</code>) to <code class=char>U+005A</code> 
-<code class=charname>LATIN CAPITAL LETTER Z</code> (<code class=char>Z</code>),
-<code class=char>U+005F</code> <code class=charname>LOW LINE</code>
-(<code class=char>_</code>), <code class=char>U+0061</code> 
-<code class=charname>LATIN SMALL LETTER A</code> 
-(<code class=char>a</code>) to <code class=char>U+006A</code>
-<code class=charname>LATIN SMALL LETTER Z</code> (<code class=char>z</code>),
-<code class=char>U+0080</code> to <code class=char>U+D7FF</code>, or
-<code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in
-<var>n</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
-<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
-hexadecimal representation of the character.  If the character
-is outside the range of <code>[<code class=char>U+0000</code>, 
-<code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
-<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</li>
-<li>If the first character in <var>n</var> is one of 
-<code class=char>U+0030</code> <code class=charname>DIGIT ZERO</code> 
-(<code class=char>0</code>) to <code class=char>U+0039</code>
-<code class=charname>DIGIT NINE</code> (<code class=char>9</code>),
-then prepend a string <code>\00003</code> at the beginning of 
-<var>n</var>.</li>
-<li>If the first character in <var>n</var> is <code class=char>U+002D</code>
-<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>) and
-the second character, if any, is <em>not</em> one of 
-<code class=char>U+0041</code> <code class=charname>LATIN CAPITAL LETTER
-A</code> (<code class=char>A</code>) to <code class=char>U+005A</code> 
-<code class=charname>LATIN CAPITAL LETTER Z</code> (<code class=char>Z</code>),
-<code class=char>U+005F</code> <code class=charname>LOW LINE</code>
-(<code class=char>_</code>), <code class=char>U+0061</code> 
-<code class=charname>LATIN SMALL LETTER A</code> 
-(<code class=char>a</code>) to <code class=char>U+006A</code>
-<code class=charname>LATIN SMALL LETTER Z</code> (<code class=char>z</code>),
-<code>U+0080</code> to <code>U+D7FF</code>, or
-<code>U+E000</code> to <code>U+10FFFF</code>, or
-<var>n</var> is equal to <code class=char>U+002D</code>
-<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>), then
-replace the <code class=char>U+002D</code>
-<code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
-character by string <code>\00002D</code>.</li>
-<li>Then, <var>n</var> is the result of the algorithm.</li>
-</ol>
-
-<p>To <dfn id=algorithm-normalize-a-string title="normalize a STRING">normalize
-a <code>STRING</code> (<dfn id=var-s><var>s</var></dfn>)</dfn>:</p>
-<ol>
-<li><p>Replace the escape sequences (<code>\</code> and following 
-characters) in <var>s</var> by characters represented by them
-(or an empty string if <code>\</code> is immediately followed by
-newline character(s)) respectively.</p></li>
-<li><p>Remove the quotation characters in <var>s</var>
-if <var>s</var> is a <code>STRING</code>.</p>
+<p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation is defined for an invalid group of selectors.</p>
 
 <div class="note memo">
-<p>The input <var>s</var> to this algorithm may be an
-<code>IDENT</code>.</p>
-</div></li>
-<li><p>If there is any character that is <em>not</em> one of 
-<code class=char>U+0020</code> <code class=charname>SPACE</code>,
-<code class=char>U+0021</code> <code class=charname>EXCLAMATION MARK</code>
-(<code class=char>!</code>), <code class=char>U+0023</code> 
-<code class=charname>NUMBER SIGN</code> (<code class=char>#</code>) to
-<code class=char>U+005B</code> <code class=charname>LEFT SQUARE
-BRACKET</code>, <code class=char>U+005D</code> <code class=charname>RIGHT
-SQUARE BRACKET</code> to <code class=char>U+D7FF</code>, or
-<code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in 
-<var>s</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
-<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
-hexadecimal representation of the character.  If the character
-is outside the range of <code>[<code class=char>U+0000</code>, 
-<code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
-<em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</p></li>
-<li><p>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
-MARK</code> (<code class=char>"</code>) at the beginning of 
-<var>s</var>.</p></li>
-<li><p>Insert a <code class=char>U+0022</code> <code class=charname>QUOTATION 
-MARK</code> (<code class=char>"</code>) at the end of <var>s</var>.</p></li>
-<li><p>Then, <var>s</var> is the result of the algorithm.</p></li>
-</ol>
-
-<p>A <dfn id=newline title=newline>newline</dfn> 
-<em class=rfc2119>SHOULD</em> be represented as a
-<code class=char>U+000A</code> <code class=charname>LINE FEED</code>
-character.  However, depending on the context where
-the <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representation is in use, a sequence of 
-<code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
-followed by a <code class=char>U+000A</code> 
-<code class=charname>LINE FEED</code> (i.e. a
-<code>CRLF</code> sequence) or a character
-<code class=char>U+000D</code> <code class=charname>CARRIAGE RETURN</code>
-<em class=rfc2119>MAY</em> be used as a <a href="#newline">newline</a> instead.
-<a href="#newline">Newline</a> representations 
-<em class=rfc2119>SHOULD</em> be consistent in an
-<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representation.</p>
-
-<div class="note memo">
-<p>Therefore, newlines must be normalized before 
-<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
-representations are literally compared.</p>
+<p>The serialized representation will not contain any comment.</p>
 </div>
+
+<!-- TODO: link terms to Selectors -->
+
+<p>To 
+<dfn id=algorithm-serialize-a-group-of-selectors title="serialize a group of selectors">serialize
+a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>:</p>
+<ol>
+<li>Let <dfn id=var-result><var>result</var></dfn> an empty string.</li>
+<li>For each selector (<dfn id=var-selector><var>selector</var></dfn>) in 
+<var>gs</var>:
+  <ol>
+  <li>If <var>selector</var> is <em>not</em> the first selector
+  in the group of selectors, then append a <code class=char>U+002C</code>
+  <code class=charname>COMMA</code> (<code class=char>,</code>) followed by a
+  <a href="#newline">newline</a> to <var>result</var>.</li>
+  <li>Append four <code class=char>U+0020</code>
+  <code class=charname>SPACE</code> characters to <var>result</var>.</li>
+  <li>Process each sequence of simple selectors or
+  combinator in <var>selector</var> by following algorithm:
+    <dl class=switch>
+    <dt>If it is a sequence of simle selector 
+    (<dfn id=var-sss><var>sss</var></dfn>)</dt>
+      <dd>
+        <ol>
+        <li class=ed><a href="#algorithm-serialize-a-simple-selector">Serialize
+        each simple selector</a> in <var>sss</var>.</li>
+        <li class=ed>sort</li>
+        <li>Append a <a href="#newline">newline</a> to <var>result</var>.</li>
+        </ol>
+      </dd>
+    <dt>If it is a combinator (<dfn id=var-c><var>c</var></dfn>)</dt>
+      <dd>
+        <ol>
+        <li>Append two <code class=char>U+0020</code>
+        <code class=charname>SPACE</code> characters to <var>result</var>.</li>
+        <li>
+          <dl class=switch>
+          <dt>If <var>c</var> is descendant combinator (white space)</dt>
+            <dd>Append a <code class=char>U+0020</code>
+            <code class=charname>SPACE</code> character to
+            <var>result</var>.</dd>
+          <dt>If <var>c</var> is child combinator
+          (<code class=char>></code>)</dt>
+            <dd>Append a <code class=char>U+003E</code>
+            <code class=charname>GREATER-THAN SIGN</code>
+            (<code class=char>></code>) character to <var>result</var>.</dd>
+          <dt>If <var>c</var> is adjacent sibling combinator
+          (<code class=char>+</code>)</dt>
+            <dd>Append a <code class=char>U+002B</code>
+            <code class=charname>PLUS SIGN</code> (<code class=char>+</code>)
+            character to <var>result</var>.</dd>
+          <dt>If <var>c</var> is general sibling combinator
+          (<code class=char>~</code>)</dt>
+            <dd>Append a <code class=char>U+007E</code>
+            <code class=charname>TILDE</code> (<code class=char>~</code>)
+            character to <var>result</var>.</dd>
+          </dl>
+        </li>
+        <li>Append a <code class=char>U+0020</code>
+        <code class=charname>SPACE</code> character to
+        <var>result</var>.</li>
+        </ol>
+      </dd>
+    </dl>
+  </ol>
+</li>
+<li>Then, <var>result</var> is the 
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation of <var>gs</var>.</li>
+</ol>
 
 </div>
 
