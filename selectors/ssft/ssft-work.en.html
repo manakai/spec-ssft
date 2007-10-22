@@ -128,6 +128,14 @@ document are to be interpreted as described in
 2119</a>
 <cite class="bibref normative">[<a href="#ref-KEYWORDS">KEYWORDS</a>]</cite>.</p>
 
+<p>Requirements phrased in the imperative as part of algorithms are to be 
+interpreted with the meaning of the key word (<em class=rfc2119>MUST</em>)
+used in introducing the algorithm.</p>
+
+<p>Conformance requirements phrased as algorithms or specific steps 
+<em class=rfc2119>MAY</em> be implemented in any manner, so long as the end
+result is equivalent.</p>
+
 <!-- Strictly speaking the paragraph below is not part of terminology. -->
 <p>All examples and notes in this specification are non‐normative,
 as are all sections explicitly marked non‐normative.  Everything
@@ -149,11 +157,17 @@ Representation</h2>
 for now.</p>
 </div>
 
+<div class="note memo">
+<p>The serialized representation will not contain any comment.</p>
+</div>
+<!-- TODO: link terms to Selectors -->
+
 <div class=section id=serializing-tokens>
 <h3>Serializing Tokens</h3>
 
 <p>To <dfn id=algorithm-normalize-an-ident title="normalize an IDENT">normalize
-an <code>IDENT</code> (<dfn id=var-n><var>n</var></dfn>)</dfn>:</p>
+an <code>IDENT</code> (<dfn id=var-n><var>n</var></dfn>)</dfn>,
+the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <ol>
 <li>Replace the escape sequences (<code>\</code> and following 
 characters) in <var>n</var> by characters represented by them
@@ -208,7 +222,8 @@ character by string <code>\00002D</code>.</li>
 </ol>
 
 <p>To <dfn id=algorithm-normalize-a-string title="normalize a STRING">normalize
-a <code>STRING</code> (<dfn id=var-s><var>s</var></dfn>)</dfn>:</p>
+a <code>STRING</code> (<dfn id=var-s><var>s</var></dfn>)</dfn>,
+the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <ol>
 <li><p>Replace the escape sequences (<code>\</code> and following 
 characters) in <var>s</var> by characters represented by them
@@ -273,9 +288,13 @@ representations are literally compared.</p>
 <div class=section id=serializing-simple-selectors>
 <h3>Serializing Simple Selectors</h3>
 
+<p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation is defined for an invalid simple selector selector.</p>
+
 <p>To 
 <dfn id=algorithm-serialize-a-simple-selector title="serialize a simple selector">serialize
-a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
+a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>,
+the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <dl class=switch>
 <dt>If <var>ss</var> is a type or universal selector</dt>
   <dd>
@@ -503,15 +522,10 @@ a simple selector (<dfn><var id=var-ss>ss</var></dfn>)</dfn>:</p>
 <p>No <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
 representation is defined for an invalid group of selectors.</p>
 
-<div class="note memo">
-<p>The serialized representation will not contain any comment.</p>
-</div>
-
-<!-- TODO: link terms to Selectors -->
-
 <p>To 
 <dfn id=algorithm-serialize-a-group-of-selectors title="serialize a group of selectors">serialize
-a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>:</p>
+a group of selectors (<dfn id=var-gs><var>gs</var></dfn>)</dfn>,
+the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <ol>
 <li>Let <dfn id=var-result><var>result</var></dfn> an empty string.</li>
 <li>For each selector (<dfn id=var-selector><var>selector</var></dfn>) in 
