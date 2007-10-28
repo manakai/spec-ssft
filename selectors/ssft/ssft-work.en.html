@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft <time datetime=2007-10-22>22 October 2007</time></h2>
+<h2>Working Draft <time datetime=2007-10-28>28 October 2007</time></h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -98,7 +98,11 @@ in a tree structure and are used in Web technologies, including
 <abbr>API</abbr></a>
 <cite class="bibref informative">[<a href="#ref-SAPI">SAPI</a>]</cite>.</p>
 
-<div class="issue ed">...</div>
+<p>It is so flexible language that a conceptually same pattern
+can be represented in inifnite numbers of instances of selectors.
+It might be convinient for e.g. validation of a test result to 
+define a subset of the language, in which no semantically equivalent 
+selectors are contained.</p>
 
 <p><a href="http://dev.w3.org/cvsweb/csswg/cssom/Overview.html">The 
 <abbr title="Cascading Style Sheets Object Model">CSSOM</abbr> 
@@ -111,7 +115,8 @@ attribute.  However, the algorithm is incomplete
 <time datetime=2007-09-25>at the time of the writing</time>.  
 Note that current Web browser implementations
 of the <code>selectorText</code> attribute are consistently broken
-in not escaping unsafe identifiers.</p>
+in not escaping unsafe identifiers and therefore it is not wise
+to deploy that format for testing.</p>
 
 </div>
 
@@ -170,13 +175,16 @@ also the reference implementation</a> for now.</p>
 <div class=section id=serializing-tokens>
 <h3>Serializing Tokens</h3>
 
-<p>To <dfn id=algorithm-normalize-an-ident title="normalize an IDENT">normalize
-an <code>IDENT</code> (<dfn id=var-n><var>n</var></dfn>)</dfn>,
+<p>To <dfn id=algorithm-normalize-an-ident title="normalize a string as an IDENT">normalize
+a string (<dfn id=var-n><var>n</var></dfn>) as an <code>IDENT</code></dfn>,
 the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <ol>
-<li>Replace the escape sequences (<code>\</code> and following 
-characters) in <var>n</var> by characters represented by them
-respectively.</li>
+<li>If <var>n</var> is either an <code>IDENT</code> or a <code>HASH</code>, 
+replace the escape sequences (<code>\</code> and following characters) in 
+<var>n</var> by characters represented by them respectively.</li>
+<li>If <var>n</var> is a <code>HASH</code>, remove the leading 
+<code class=char>U+0023</code> <code class=charname>NUMBER SIGN</code>
+(<code class=char>#</code>) character from <var>n</var>.</li>
 <li>If there is any character that is <em>not</em> one of 
 <code class=char>U+002D</code> <code class=charname>HYPHEN-MINUS</code> 
 (<code class=char>-</code>), <code class=char>U+0030</code>
@@ -226,21 +234,17 @@ character by string <code>\00002D</code>.</li>
 <li>Then, <var>n</var> is the result of the algorithm.</li>
 </ol>
 
-<p>To <dfn id=algorithm-normalize-a-string title="normalize a STRING">normalize
-a <code>STRING</code> (<dfn id=var-s><var>s</var></dfn>)</dfn>,
+<p>To <dfn id=algorithm-normalize-a-string title="normalize a string (STRING or IDENT) as a STRING">normalize
+a string (<dfn id=var-s><var>s</var></dfn>) as a <code>STRING</code></dfn>,
 the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <ol>
-<li><p>Replace the escape sequences (<code>\</code> and following 
-characters) in <var>s</var> by characters represented by them
+<li>If <var>s</var> is either an <code>IDENT</code> or a
+<code>STRING</code>, replace the escape sequences (<code>\</code> and 
+following characters) in <var>s</var> by characters represented by them
 (or an empty string if <code>\</code> is immediately followed by
-newline character(s)) respectively.</p></li>
-<li><p>Remove the quotation characters in <var>s</var>
-if <var>s</var> is a <code>STRING</code>.</p>
-
-<div class="note memo">
-<p>The input <var>s</var> to this algorithm may be an
-<code>IDENT</code>.</p>
-</div></li>
+newline character(s)) respectively.</li>
+<li>If <var>s</var> is a <code>STRING</code>, remove the quotation marks
+enclosing <var>s</var>.</li>
 <li><p>If there is any character that is <em>not</em> one of 
 <code class=char>U+0020</code> <code class=charname>SPACE</code>,
 <code class=char>U+0021</code> <code class=charname>EXCLAMATION MARK</code>
@@ -319,7 +323,12 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
       <dl class=switch>
       <dt>If a namespace URI is specified (via namespace prefix, or
       by omitting namespace prefix where a default namespace is specified)</dt>
-        <dd class="ed">@@</dd>
+        <dd>Append the namespace URI as a 
+        <a href="#algorithm-normalize-an-ident" title="normalize a string as an IDENT">normalized
+        <code>IDENT</code></a> to <var>r</var>.  Then, append a
+        <code class=char>U+007C</code>
+        <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
+        character to <var>r</var>.</dd>
       <dt>If the null namespace is specified (by zero‐length namespace
       prefix)</dt>
         <dd>Append a <code class=char>U+007C</code>
@@ -336,7 +345,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
       </dl>
     </li>
     <li>If <var>ss</var> is a type selector, append the
-    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a> 
+    <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) an IDENT">normalized</a> 
     local name to <var>r</var>.</li>
     <li>If <var>ss</var> is a universal selector, append 
     a <code class=char>U+002A</code> <code class=charname>ASTERISK</code>
@@ -353,9 +362,12 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
       Append a namespace prefix as following:
       <dl>
       <dt>If a namespace URI is specified</dt>
-        <dd class=ed>@@</dd>
-        <dd class=ed>@@ Current reference implementation is wrong,
-        since its result of sorting depends on namespace prefix.</dd>
+        <dd>Append the namespace URI as a
+        <a href="#algorithm-normalize-an-ident" title="normalize a string as an IDENT">normalized
+        <code>IDENT</code></a> to <var>r</var>.  Then, append a
+        <code class=char>U+007C</code>
+        <code class=charname>VERTICAL BAR</code> (<code class=char>|</code>)
+        character to <var>r</var>.</dd>
       <dt>If the null namespace is specified</dt>
         <dd>Append a <code class=char>U+007C</code>
         <code class=charname>VERTICAL BAR</code> character to
@@ -369,7 +381,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
       </dl>
     </li>
     <li>Append the
-    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+    <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) as an IDENT">normalized</a>
     local name to <var>r</var>.</li>
     <li>If a value is specified in <var>ss</var>:
       <ol>
@@ -389,12 +401,12 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
 <dt>If <var>ss</var> is a class selector</dt>
   <dd>Append a <code class=char>U+002E</code> <code class=charname>FULL
   STOP</code> (<code class=char>.</code>) character, followed
-  by <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+  by <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) as an IDENT">normalized</a>
   class name, to <var>r</var>.</dd>
 <dt>If <var>ss</var> is an <abbr>ID</abbr> selector</dt>
   <dd>Append a <code class=char>U+0023</code> <code class=charname>NUMBER
   SIGN</code> (<code class=char>#</code>) character, followed
-  by <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+  by <a href="#algorithm-normalize-an-ident" title="normalize a string (HASH except for the leading #) as an IDENT">normalized</a>
   <abbr>ID</abbr>, to <var>r</var>.</dd>
 <dt>If <var>ss</var> is a pseudo‐class selector</dt>
   <dd>
@@ -403,7 +415,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     <code class=charname>COLON</code> (<code class=char>:</code>) character
     to <var>r</var>.</li>
     <li>Append the
-    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+    <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) as an IDENT">normalized</a>
     name (in <a href="#lower-case">lower‐case</a>) of the pseudo‐class to
     <var>r</var>.</li>
     <li>Append any arguments as following:
@@ -415,7 +427,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           PARENTHESIS</code> (<code class=char>(</code>) character
           to <var>r</var>.</li>
           <li>Append the
-          <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+          <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) as an IDENT">normalized</a>
           language tag (the argument) to <var>r</var>.
           <span class="issue ed">Should we normalize cases?</span></li>
           <li>Append a <code class=char>U+0029</code>
@@ -531,7 +543,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     <code class=charname>COLON</code> characters (<code>::</code>)
     to <var>r</var>.</li>
     <li>Append the
-    <a href="#algorithm-normalize-an-ident" title="normalize an IDENT">normalized</a>
+    <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) as an IDENT">normalized</a>
     name (in <a href="#lower-case">lower‐case</a>) of the pseudo‐element
     to <var>r</var>.</li>
     <li>If the pseudo‐element has any arguments:
