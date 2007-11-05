@@ -290,8 +290,9 @@ representations are literally compared.</p>
 </div>
 
 <div class="issue ed">
-<p>Need to define <dfn id=lowercase>lowercase</dfn>.
-It is tr/A-Z/a-z/ for now.</p>
+<p>In a future version of the specification, we need to define 
+<dfn id=lowercase>lowercase</dfn> (maybe by referencing some version of 
+some module of <abbr>CSS</abbr>).  It is <code>tr/A-Z/a-z/</code> for now.</p>
 </div>
 
 <p>To 
@@ -491,7 +492,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           <li>Let <var>a</var> be the
           <a href="#algorithm-normalize-an-integer" title="normalize an integer">normalized
           string representation</a> of integer <var>a</var>.</li>
-          <li>Append <var>a</var> to <var>result</var>.</li>
+          <li>Append <var>a</var> to <var>r</var>.</li>
           <li>Append a <code class=char>U+006E</code> 
           <code class=charname>LATIN SMALL LETTER N</code>
           (<code class=char>n</code>) character to <var>r</var>.</li>
@@ -509,8 +510,8 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           <code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
           character, then append <code class=char>U+002B</code>
           <code class=charname>PLUS SIGN</code>
-          (<code class=char>+</code>) to <var>result</var>.</li>
-          <li>Append <var>b</var> to <var>result</var>.</li>
+          (<code class=char>+</code>) to <var>r</var>.</li>
+          <li>Append <var>b</var> to <var>r</var>.</li>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code>
           (<code class=char>)</code>) character
