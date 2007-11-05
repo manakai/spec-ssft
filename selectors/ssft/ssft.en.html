@@ -125,8 +125,7 @@ to deploy that format for testing.</p>
 
 <p>The key words <q><dfn id=must><em class="rfc2119">MUST</em></dfn></q>,
 <q><dfn id=must-not><em class="rfc2119">MUST NOT</em></dfn></q>,
-<q><dfn id=should><em class="rfc2119">SHOULD</em></dfn></q>,
-<q><dfn id=should-not><em class="rfc2119">SHOULD NOT</em></dfn></q>, and
+<q><dfn id=should><em class="rfc2119">SHOULD</em></dfn></q>, and
 <q><dfn id=may><em class=rfc2119>MAY</em></dfn></q> in this
 document are to be interpreted as described in 
 <a href="urn:ietf:rfc:2119"><abbr title="Request for Comments">RFC</abbr> 
@@ -198,8 +197,8 @@ A</code> (<code class=char>A</code>) to <code class=char>U+005A</code>
 <code class=char>U+0080</code> to <code class=char>U+D7FF</code>, or
 <code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in
 <var>n</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
-<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
-hexadecimal representation of the character.  If the character
+<dfn id=var-ident-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case 
+zero‐padded hexadecimal representation of the character.  If the character
 is outside the range of <code>[<code class=char>U+0000</code>, 
 <code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
 <em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</li>
@@ -251,8 +250,8 @@ BRACKET</code>, <code class=char>U+005D</code> <code class=charname>RIGHT
 SQUARE BRACKET</code> to <code class=char>U+D7FF</code>, or
 <code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in 
 <var>s</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
-<dfn id=var-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case zero‐padded
-hexadecimal representation of the character.  If the character
+<dfn id=var-string-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case
+zero‐padded hexadecimal representation of the character.  If the character
 is outside the range of <code>[<code class=char>U+0000</code>, 
 <code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
 <em class=rfc2119>MUST</em> be <code>FFFFFF</code>.</p></li>
