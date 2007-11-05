@@ -200,7 +200,7 @@ A</code> (<code class=char>A</code>) to <code class=char>U+005A</code>
 <code class=char>U+0080</code> to <code class=char>U+D7FF</code>, or
 <code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in
 <var>n</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
-<dfn id=var-ident-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case 
+<dfn id=var-ident-HHHHHH><var>HHHHHH</var></dfn> is the uppercase 
 zero‐padded hexadecimal representation of the character.  If the character
 is outside the range of <code>[<code class=char>U+0000</code>, 
 <code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
@@ -253,7 +253,7 @@ BRACKET</code>, <code class=char>U+005D</code> <code class=charname>RIGHT
 SQUARE BRACKET</code> to <code class=char>U+D7FF</code>, or
 <code class=char>U+E000</code> to <code class=char>U+10FFFF</code> in 
 <var>s</var>, then replace it by string <code>\<var>HHHHHH</var></code>, where
-<dfn id=var-string-HHHHHH><var>HHHHHH</var></dfn> is the upper‐case
+<dfn id=var-string-HHHHHH><var>HHHHHH</var></dfn> is the uppercase
 zero‐padded hexadecimal representation of the character.  If the character
 is outside the range of <code>[<code class=char>U+0000</code>, 
 <code class=char>U+10FFFF</code>]</code>, <var>HHHHHH</var> 
@@ -290,7 +290,7 @@ representations are literally compared.</p>
 </div>
 
 <div class="issue ed">
-<p>Need to define <dfn id=lower-case>lower‐case</dfn>.
+<p>Need to define <dfn id=lowercase>lowercase</dfn>.
 It is tr/A-Z/a-z/ for now.</p>
 </div>
 
@@ -435,7 +435,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     to <var>r</var>.</li>
     <li>Append the
     <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) as an IDENT">normalized</a>
-    name (in <a href="#lower-case">lower‐case</a>) of the pseudo‐class to
+    name (in <a href="#lowercase">lowercase</a>) of the pseudo‐class to
     <var>r</var>.</li>
     <li>Append any arguments as following:
       <dl class=switch>
@@ -567,7 +567,7 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     to <var>r</var>.</li>
     <li>Append the
     <a href="#algorithm-normalize-an-ident" title="normalize a string (IDENT) as an IDENT">normalized</a>
-    name (in <a href="#lower-case">lower‐case</a>) of the pseudo‐element
+    name (in <a href="#lowercase">lowercase</a>) of the pseudo‐element
     to <var>r</var>.</li>
     <li>If the pseudo‐element has any arguments:
         The pseudo‐element is not supported by this version of 
