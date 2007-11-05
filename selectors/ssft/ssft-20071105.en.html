@@ -52,7 +52,10 @@ available at <code class="URI">&lt;<a
 <div id="abstract" class="section">
 <h2>Abstract</h2>
 
-<div class="ed issue">...</div>
+<p>This document defines 
+<abbr title="Selectors Serialization Format for Testing">SSFT</abbr>,
+a subset of Selectors language which is suitable for describing results
+of Selectors parsing tests.</p>
 
 </div>
 
@@ -294,7 +297,7 @@ It is tr/A-Z/a-z/ for now.</p>
 <p>To 
 <dfn id=algorithm-normalize-an-integer title="normalize an integer">normalize
 an integer (<dfn id=var-int-i><var>i</var></dfn>)</dfn>, the following
-algorithm <em class=rfc2119>MUST</em> be run:</p>
+algorithm <em class=rfc2119>MUST</em> be used:</p>
 <ol class=algorithm>
 <li>If <var>i</var> is equal to zero (0), return a string with only a
 character: <code class=char>U+0030</code> 
@@ -719,16 +722,41 @@ representations of <a href="#simple-selector">simple selectors</a>.</p>
 
 <p class=section-info>This section is <em>non‐normative</em>.</p>
 
-<div class="ed issue">
-<p><a href="http://suika.fam.cx/gate/2007/css/parser-interface">Try demo</a>,
-by choosing <q>Selectors</q> radio button.</p>
-
 <div class="example figure block">
-<div class="caption">...</div>
+<p>The <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation of a selector <code>p + q</code> is:</p>
 
-<pre><code>...</code></pre>
+<pre><code>    *|p
+  + *|q
+</code></pre>
 </div>
 
+<div class="example figure block">
+<p>The <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation of a selector <code>a#id.class1:n\ot(:Active)/*
+ comment
+*/.class2</code> is:</p>
+
+<pre><code>    *|a.class1.class2#id:not(
+        :active
+    )
+</code></pre>
+</div>
+
+<div class="example figure block">
+<p>The <abbr title="Selectors Serialization Format for Testing">SSFT</abbr>
+representation of a
+<a href="http://www.w3.org/TR/css3-selectors/#grouping">group of selectors</a> 
+<code>a, #b, C[d^=e], .\31 23</code> is:</p>
+
+<pre><code>    *|a
+,
+    *|*#b
+,
+    *|C[|d^="e"]
+,
+    *|*.\00003123
+</code></pre>
 </div>
 
 </div>
