@@ -10,7 +10,7 @@
 <div class="header">
 <h1>Selectors Serialization Format for Testing (<abbr>SSFT</abbr>)
 Specification</h1>
-<h2>Working Draft <time datetime=2007-10-28>28 October 2007</time></h2>
+<h2>Working Draft <time datetime=2007-11-05>5 November 2007</time></h2>
 
 <dl class="versions-uri">
 <dt>This Version</dt>
@@ -162,15 +162,11 @@ to <a href="#algorithm-serialize-a-simple-selector">serialize a simple
 selector</a> or <a href="#algorithm-serialize-a-group-of-selectors">serialize
 a group of selectors</a>.</p>
 
-<div class="issue ed">
-<p><a href="http://suika.fam.cx/gate/cvs/*checkout*/markup/html/whatpm/Whatpm/CSS/SelectorsSerializer.pm">See
-also the reference implementation</a> for now.</p>
-</div>
-
 <div class="note memo">
 <p>The serialized representation will not contain any comment.</p>
 </div>
-<!-- TODO: link terms to Selectors -->
+
+<div class="ed issue"><p>TODO: link terms to Selectors</p></div>
 
 <div class=section id=serializing-tokens>
 <h3>Serializing Tokens</h3>
@@ -295,6 +291,27 @@ representations are literally compared.</p>
 <p>Need to define <dfn id=lower-case>lower‐case</dfn>.
 It is tr/A-Z/a-z/ for now.</p>
 </div>
+
+<p>To 
+<dfn id=algorithm-normalize-an-integer title="normalize an integer">normalize
+an integer (<dfn id=var-int-i><var>i</var></dfn>)</dfn>, the following
+algorithm <em class=rfc2119>MUST</em> be run:</p>
+<ol class=algorithm>
+<li>If <var>i</var> is equal to zero (0), return a string with only a
+character: <code class=char>U+0030</code> 
+<code class=charname>DIGIT ZERO</code> (<code class=char>0</code>).
+Stop the algorithm.</li>
+<li>Let <dfn id=var-int-result><var>result</var></dfn> be an empty string.</li>
+<li>If <var>i</var> is less than zero (0), append a 
+<code class=char>U+002D</code> <code class=charname>HYPHEN-MINUS</code>
+(<code class=char>-</code>) character to <var>result</var>.</li>
+<li>Append the decimal representation of the absolute value of
+<var>i</var> to <var>result</var>.  The decimal (base‐ten) representation
+<em class=rfc2119>MUST NOT</em> begin with a <code class=char>U+0030</code>
+<code class=charname>DIGIT ZERO</code> (<code class=char>0</code>)
+character.</li>
+<li>Return <var>result</var>.</li>
+</ol>
 
 </div>
 
@@ -460,34 +477,38 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
           <li>Append a <code class=char>U+0028</code> <code class=charname>LEFT
           PARENTHESIS</code> (<code class=char>(</code>) character
           to <var>r</var>.</li>
-          <li>Append <span class=ed>@@ normalized</span>
-          integer <var>a</var> to <var>r</var>.
-          If the argument is a keyword <code>odd</code> or <code>even</code>,
-          <var>a</var> is <code>2</code>.  If <var>a</var> and
-          <code>n</code> is omitted, <var>a</var> is assumed as
-          <code>0</code>.  Otherwise, if <var>a</var> is omitted,
-          it is assumed as <code>1</code> (or <code>-1</code>,
-          if there is a <code class=char>U+002D</code>
-          <code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
-          character).</li>
+          <li>Let <dfn id=var-a><var>a</var></dfn> be the <var>a</var>
+          part of the argument.  If the argument is a keyword <code>odd</code>
+          or <code>even</code>, then let <var>a</var> be <code>2</code>.
+          If the <var>a</var> part with following <code>n</code> character
+          is omitted, then let <var>a</var> be <code>0</code>.
+          Otherwise, if only the <var>a</var> part is omitted, then
+          let <var>a</var> be <code>1</code>.  Otherwise, if the <var>a</var>
+          part is <code>-</code>, then let <var>a</var> be
+          <code>-1</code>.</li>
+          <li>Let <var>a</var> be the
+          <a href="#algorithm-normalize-an-integer" title="normalize an integer">normalized
+          string representation</a> of integer <var>a</var>.</li>
+          <li>Append <var>a</var> to <var>result</var>.</li>
           <li>Append a <code class=char>U+006E</code> 
           <code class=charname>LATIN SMALL LETTER N</code>
           (<code class=char>n</code>) character to <var>r</var>.</li>
-          <li>Append <span class=ed>@@ normalized</span>
-          integer <var>b</var> to <var>r</var>.
-          It <em class=rfc2119>MUST</em> be preceded by a sign,
-          either <code class=char>U+002B</code> <code class=charname>PLUS
-          SIGN</code> (<code class=char>+</code>) or
-          <code class=char>U+002D</code> 
+          <li>Let <dfn id=var-b><var>b</var></dfn> be the <var>b</var>
+          part of the argument.  If the argument is a keyword <code>odd</code>,
+          then let <var>b</var> be <code>1</code>.  If the argument is a
+          keyword <code>even</code>, then let <var>b</var> be <code>0</code>.
+          If the <var>b</var> part is omitted, then let <var>b</var> be
+          <code>0</code>.</li>
+          <li>Let <var>b</var> be the
+          <a href="#algorithm-normalize-an-integer" title="normalize an integer">normalized
+          string representation</a> of integer <var>b</var>.</li>
+          <li>If <var>b</var> does <em>not</em> start with a
+          <code class=char>U+002D</code>
           <code class=charname>HYPHEN-MINUS</code> (<code class=char>-</code>)
-          character.  If the argument is a keyword <code>odd</code>,
-          <var>b</var> is <code>1</code>.  If the argument
-          is a keyword <code>even</code>, <var>b</var> is
-          <code>0</code>.  If <var>b</var> is omitted, it is assumed as
-          <code>0</code>.  The sign of <code>0</code>
-          <em class=rfc2119>MUST</em> be <code class=char>U+002B</code>
-          <code class=charname>PLUS SIGN</code> 
-          (<code class=char>+</code>).</li>
+          character, then append <code class=char>U+002B</code>
+          <code class=charname>PLUS SIGN</code>
+          (<code class=char>+</code>) to <var>result</var>.</li>
+          <li>Append <var>b</var> to <var>result</var>.</li>
           <li>Append a <code class=char>U+0029</code>
           <code class=charname>RIGHT PARENTHESIS</code>
           (<code class=char>)</code>) character
@@ -594,9 +615,30 @@ the following algorithm <em class=rfc2119>MUST</em> be used:</p>
     (<dfn id=var-sss><var>sss</var></dfn>)</dt>
       <dd>
         <ol>
-        <li class=ed><a href="#algorithm-serialize-a-simple-selector">Serialize
-        each simple selector</a> in <var>sss</var>.</li>
-        <li class=ed>sort</li>
+        <li>If <var>sss</var> contains a universal or type selector, then
+        <a href="#algorithm-serialize-a-simple-selector" title="serialize a simple selector">serialize
+        that simple selector</a> and append the result to
+        <var>result</var>.</li>
+        <li>Otherwise, i.e. if <var>sss</var> does not contain a universal or 
+        type selector, then
+        <a href="#algorithm-serialize-a-simple-selector" title="serialize a simple selector">serialize
+        a simple selector <code>*</code></a> and append the result to
+        <var>result</var>.</li>
+        <li><a href="#algorithm-serialize-a-simple-selector" title="serialize a simple selector">Serialize
+        any attribute selectors</a> in <var>sss</var>, sort the results,
+        then append them to <var>result</var> in order.</li>
+        <li><a href="#algorithm-serialize-a-simple-selector" title="serialize a simple selector">Serialize
+        any class selectors</a> in <var>sss</var>, sort the results,
+        then append them to <var>result</var> in order.</li>
+        <li><a href="#algorithm-serialize-a-simple-selector" title="serialize a simple selector">Serialize
+        any <abbr>ID</abbr> selectors</a> in <var>sss</var>, sort the results,
+        then append them to <var>result</var> in order.</li>
+        <li><a href="#algorithm-serialize-a-simple-selector" title="serialize a simple selector">Serialize
+        any pseudo‐class selectors</a> in <var>sss</var>, sort the results,
+        then append them to <var>result</var> in order.</li>
+        <li><a href="#algorithm-serialize-a-simple-selector" title="serialize a simple selector">Serialize
+        any pseudo elements</a> in <var>sss</var>, sort the results,
+        then append them to <var>result</var> in order.</li>
         <li>Append a <a href="#newline">newline</a> to <var>result</var>.</li>
         </ol>
       </dd>
